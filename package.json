@@ -3,9 +3,27 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^3.9.3",
+    "@material-ui/icons": "^3.0.2",
+    "crypto-js": "^3.1.9-1",
+    "formik": "^1.5.2",
+    "mobx": "^5.9.4",
+    "mobx-react": "^5.4.3",
+    "qrcode-react": "^0.1.16",
+    "randombytes": "^2.1.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-scripts": "2.1.8"
+    "react-router-dom": "^5.0.0",
+    "react-router-guard": "^1.0.4",
+    "react-scripts": "2.1.8",
+    "styled-components": "^4.2.0",
+    "truffle-contract": "^4.0.11"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.3",
+    "@babel/plugin-proposal-decorators": "^7.4.0",
+    "@babel/preset-env": "^7.4.3",
+    "@babel/preset-react": "^7.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
