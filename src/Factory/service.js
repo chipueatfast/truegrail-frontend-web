@@ -1,13 +1,26 @@
-import TruffleContract from 'truffle-contract';
+
 import randomBytes from 'randombytes';
 import SHA256 from 'crypto-js/sha256';
-import TrueGrailToken from '../contracts/TrueGrailToken.json';
 import web3Provider from '../MetaMask';
 
-const TrueGrailTokenContract = TruffleContract(TrueGrailToken);
+import TrueGrailTokenContract from '../contracts/TrueGrailToken';
 
-TrueGrailTokenContract.setProvider(web3Provider.currentProvider);
-TrueGrailTokenContract.defaults({from: web3Provider.eth.defaultAccount});
+
+export async function issueSneaker(id, hashInfo, onSuccess, onError) {
+    const instance = await TrueGrailTokenContract.deployed();
+    try {
+        const rs = await instance.issueToken(id, hashInfo, {
+            from: '0x8909969a0deA718d996eb1e82e67B484F831909f',
+        });
+
+        if (rs && rs.tx) {
+            onSuccess(rs.tx);
+        }
+    } catch(e) {
+        onError();
+        console.log(web3Provider.eth.defaultAccount);
+    }
+}
 
 export async function getFirstFactory() {
     const instance = await TrueGrailTokenContract.deployed();
