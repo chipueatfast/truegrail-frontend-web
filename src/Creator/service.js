@@ -22,14 +22,14 @@ export const showAddFactoryPermissionModal = (address, brand) => {
 }
 
 export const addFactory = async (address, brand) => {
-    const trueGrailTokenContract = await TrueGrailTokenContract.deployed();
+    const instance = await TrueGrailTokenContract();
     const rs = await request({
         url: API().getFactory(address),
         method: 'GET',
     });
     if (rs && rs.err && rs.err.response && rs.err.response.status === 404) {
         try {
-            await trueGrailTokenContract.addFactory(address, {
+            await instance.addFactory(address, {
                 from: web3Provider.eth.defaultAccount
             });
             const rs = await request({

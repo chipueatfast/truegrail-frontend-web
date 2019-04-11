@@ -7,10 +7,10 @@ import TrueGrailTokenContract from '../contracts/TrueGrailToken';
 
 
 export async function issueSneaker(id, hashInfo, onSuccess, onError) {
-    const instance = await TrueGrailTokenContract.deployed();
+    const instance = await TrueGrailTokenContract();
     try {
         const rs = await instance.issueToken(id, hashInfo, {
-            from: '0x8909969a0deA718d996eb1e82e67B484F831909f',
+            from: web3Provider.eth.defaultAccount,
         });
 
         if (rs && rs.tx) {
@@ -23,7 +23,7 @@ export async function issueSneaker(id, hashInfo, onSuccess, onError) {
 }
 
 export async function getFirstFactory() {
-    const instance = await TrueGrailTokenContract.deployed();
+    const instance = await TrueGrailTokenContract();
     return instance.factories(0);
 }
 

@@ -1,13 +1,19 @@
 import TruffleContract from 'truffle-contract';
-import TrueGrailToken from '../contracts/TrueGrailToken.json';
 import web3Provider from '../MetaMask';
+import request, { API } from '../utils/request';
+
+import test from './TrueGrailToken.json';
 
 
-function TrueGrailTokenJS() {
-    const TrueGrailTokenContract = TruffleContract(TrueGrailToken);
+async function TrueGrailTokenJS() {
+    const TrueGrailToken = await request({
+        url: API().contract('truegrailtoken'),
+        method: 'GET',
+    });
+    const TrueGrailTokenContract = TruffleContract(test);
     TrueGrailTokenContract.setProvider(web3Provider.currentProvider);
     TrueGrailTokenContract.defaults({from: web3Provider.eth.defaultAccount});
-    return TrueGrailTokenContract;
+    return TrueGrailTokenContract.deployed();
 }
 
-export default TrueGrailTokenJS();
+export default TrueGrailTokenJS;
