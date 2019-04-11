@@ -1,5 +1,4 @@
 
-
 export default () => {
     const server = 'http://localhost:2190';
     return ({
