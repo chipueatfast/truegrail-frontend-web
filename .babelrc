@@ -12,6 +12,18 @@
     "plugins": [
         ["@babel/plugin-proposal-decorators", { "legacy": true }],
         "@babel/plugin-syntax-dynamic-import",
-        "@babel/plugin-proposal-class-properties"
-    ]
+        "@babel/plugin-proposal-class-properties",
+        [
+            "babel-plugin-root-import", {
+                "rootPathPrefix": "@",
+                "rootPathSuffix": "./src",
+            }
+        ],
+        ["module-resolver", {
+            "root": ["./src/"],
+            "alias": {
+              "@": "./src",
+            }
+        }]
+    ],
 }
