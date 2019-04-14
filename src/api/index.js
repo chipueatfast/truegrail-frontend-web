@@ -4,5 +4,6 @@ export default () => {
         contract: (contractName) => `${server}/contract/${contractName}`,
         getFactory: (address) => `${server}/factory/${address}`,
         createFactory: () => `${server}/factory`,
+        getContractCreator: (contractName) => `${server}/contract/creator/${contractName}`
     })
 }

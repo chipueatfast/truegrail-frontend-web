@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter } from 'react-router-dom'; 
 import RouterGuard from 'react-router-guard';
+import history from './utils/history';
 import routerConfig from './routes/config';
 import UniversalNotice from './UniversalNotice';
 import UniversalModal from './UniversalModal';
@@ -23,7 +24,7 @@ class App extends Component {
             }} 
             alt='logo'
           />
-          <BrowserRouter>
+          <BrowserRouter history={history}>
             <RouterGuard config={routerConfig}/>
           </BrowserRouter>
           <UniversalNotice />
