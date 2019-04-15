@@ -2,12 +2,13 @@ import React from 'react';
 // import { getFirstFactory } from './service';
 import InfoInput from './InfoInput';
 import GeneratedLabels from './GeneratedLabels';
+import { Container } from './styled';
 
 
 
 function Factory(props) {
     return (
-        <div>
+        <Container>
             <div>Factory</div>
             <InfoInput />
             <GeneratedLabels />
@@ -19,7 +20,7 @@ function Factory(props) {
             >
                 Get first factory
             </button> */}
-        </div>
+        </Container>
     )
 }
 

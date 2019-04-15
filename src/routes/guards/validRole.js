@@ -1,4 +1,4 @@
-import userStore from '../../userStore';
+import userStore from '~/stores/userStore';
 
 export default function validRole(role) {
     return new Promise((resolve, reject) => {

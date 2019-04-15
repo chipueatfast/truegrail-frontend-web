@@ -6,7 +6,7 @@ import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
 
-import panelStore from '../panelStore';
+import panelStore from '~/stores/panelStore';
 import { observer } from 'mobx-react';
 
 const DialogTitle = withStyles(theme => ({
@@ -35,8 +35,7 @@ const DialogTitle = withStyles(theme => ({
   );
 });
 
-
-class CustomizedDialogDemo extends React.Component {
+class UniversalModal extends React.Component {
 
 
   handleClose = () => {
@@ -51,13 +50,13 @@ class CustomizedDialogDemo extends React.Component {
         renderModalContent,
     } = panelStore;
 
-    console.log('modal', isModalOpen);
 
     return (
         <Dialog
+          disableBackdropClick={true}
           onClose={this.handleClose}
           aria-labelledby="customized-dialog-title"
-          open={isModalOpen}
+          open={isModalOpen.get()}
         >
             <DialogTitle
                 onClose={panelStore.closeModal}
@@ -72,4 +71,4 @@ class CustomizedDialogDemo extends React.Component {
   }
 }
 
-export default observer(CustomizedDialogDemo);
+export default observer(UniversalModal);

@@ -5,10 +5,12 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
 import LoyaltyIcon from '@material-ui/icons/Loyalty'
 import { Formik, Field } from 'formik';
-import { FormLayout } from '../../tg-ui';
+import { FormLayout } from '~/tg-ui';
+import userStore from '~/stores/userStore';
 import { Container } from './styled';
 import {generateSneakerId, hashInitInfoJSON} from '../service';
-import PublishSneakerStore from '../stores/PublishSneakerStore';
+import publishSneakerStore from '../stores/publishSneakerStore';
+
 
 function InfoInput(props) {
     const initialValues = {
@@ -16,9 +18,11 @@ function InfoInput(props) {
         model: 'slip on checkerboard',
         size: '8.5',
         colorway: 'black-white',
-        releaseDate: '01/04/2019',
+        releaseDate: '2019-01-04',
         quantity: '10',
-        limitedEdition: true,
+        limitedEdition: false,
+        condition: 'issued',
+        ownerAddress: userStore.address,
     }
     return (
         <Container>
@@ -26,9 +30,13 @@ function InfoInput(props) {
                 initialValues={initialValues}
                 onSubmit={(values, { setSubmitting }) => {
                     setSubmitting(true);
+                    publishSneakerStore.batchInfo.set({
+                        ...values,
+                        size: parseFloat(values.size),
+                    });
                     const idBatch = generateSneakerId(values.quantity);
                     idBatch.forEach(id => {
-                        PublishSneakerStore.addLabel(hashInitInfoJSON(id, values));
+                        publishSneakerStore.addLabel(hashInitInfoJSON(id, publishSneakerStore.batchInfo.get()));
                     });
                   }}
             >

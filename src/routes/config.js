@@ -7,15 +7,15 @@ export default [
     {
         canActivate: [validRole.bind(null, 'factory')],
         path: '/factory',
-        component: dynamicWrapper(() => import('../Factory')),
+        component: dynamicWrapper(() => import('../pages/Factory')),
     },
     {
         canActivate: [validRole.bind(null, 'creator')],
         path: '/creator',
-        component: dynamicWrapper(() => import('../Creator')),
+        component: dynamicWrapper(() => import('../pages/Creator')),
     },
     {
         path: '/signin',
-        component: dynamicWrapper(() => import('../SignIn')),
+        component: dynamicWrapper(() => import('../pages/SignIn')),
     }
 ]

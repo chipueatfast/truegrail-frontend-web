@@ -16,7 +16,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { compose } from 'react-compose';
 
 import { observer } from 'mobx-react';
-import panelStore from '../panelStore';
+import panelStore from '~/stores/panelStore';
 
 
 const variantIcon = {
@@ -108,8 +108,6 @@ class CustomizedSnackbars extends React.Component {
         message,
     } = panelStore;
 
-    console.log(isNoticeOpen, variant, message);
-
     return (
       <div>
         <Snackbar
@@ -117,7 +115,7 @@ class CustomizedSnackbars extends React.Component {
             vertical: 'bottom',
             horizontal: 'left',
           }}
-          open={panelStore.isNoticeOpen}
+          open={isNoticeOpen.get()}
           onClose={this.handleClose}
         >
           <MySnackbarContentWrapper

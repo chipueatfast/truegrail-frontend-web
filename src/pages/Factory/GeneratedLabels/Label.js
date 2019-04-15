@@ -1,13 +1,22 @@
 import React from 'react';
 import QRCode from 'qrcode-react';
+import classNames from 'classnames';
 import { Button, CircularProgress, ListItem } from '@material-ui/core';
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
 import { withStyles } from '@material-ui/core/styles';
 
-import { issueSneaker, getFirstFactory } from '../service';
+import { issueSneaker } from '../service';
+import { addSneakerToDatabase } from './service';
+
+import publishSneakerStore from '../stores/publishSneakerStore';
 
 const styles = theme => ({
+    container: {
+        width: '500px',
+        border: '1px solid black',
+        margin: '10px',
+    },
     published: {
         background: '#098300',
         color: 'white',
@@ -33,8 +42,14 @@ function Label({
     const [tx, setTx] = React.useState('');
 
     const onSuccess = (tx) => {
+        debugger
+        const batchInfo = publishSneakerStore.batchInfo.get();
         setPublishState(2);
         setTx(tx);
+        addSneakerToDatabase({
+            ...batchInfo,
+            id: data.id,
+        });
     } 
     const onError = () => {
         setPublishState(3);
@@ -81,7 +96,7 @@ function Label({
 
     return (
         <ListItem
-            className={classes[styles[publishState]] || ''}
+            className={classNames(classes.container , classes[styles[publishState]] || '')}
         >
             <QRCode
                 value={data.id.toString()}

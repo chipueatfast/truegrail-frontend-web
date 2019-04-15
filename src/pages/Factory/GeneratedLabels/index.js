@@ -5,7 +5,7 @@ import List from '@material-ui/core/List';
 import Label from './Label'; 
 
 
-import publishSneakerStore from '../stores/PublishSneakerStore';
+import publishSneakerStore from '../stores/publishSneakerStore';
 
 class GeneratedLabels extends React.Component {
     render() {

@@ -1,6 +1,6 @@
 import TruffleContract from 'truffle-contract';
-import web3Provider from '../MetaMask';
-import request, { API } from '../utils/request';
+import web3Provider from '~/MetaMask';
+import request, { API } from '~/utils/request';
 
 import test from './TrueGrailToken.json';
 

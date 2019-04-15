@@ -1,20 +1,21 @@
 
 import randomBytes from 'randombytes';
-import SHA256 from 'crypto-js/sha256';
-import web3Provider from '../MetaMask';
+import hash from 'object-hash';
+import web3Provider from '~/MetaMask';
 
-import TrueGrailTokenContract from '../contracts/TrueGrailToken';
+import TrueGrailTokenContract from '~/contracts/TrueGrailToken';
+import userStore from '~/stores/userStore';
 
 
 export async function issueSneaker(id, hashInfo, onSuccess, onError) {
     const instance = await TrueGrailTokenContract();
     try {
-        const rs = await instance.issueToken(id, hashInfo, {
-            from: web3Provider.eth.defaultAccount,
+        const ethCall = await instance.issueToken(id, hashInfo, {
+            from: userStore.address,
         });
 
-        if (rs && rs.tx) {
-            onSuccess(rs.tx);
+        if (ethCall && ethCall.tx) {
+            onSuccess(ethCall.tx);
         }
     } catch(e) {
         onError();
@@ -36,22 +37,14 @@ export function generateSneakerId(quantity) {
 }
 
 export function hashInitInfoJSON(id, info) {
-    const {
-        words,
-    } = SHA256(JSON.stringify({
-        ...info,
+    delete info.quantity;
+    const dataHash = hash({
         id,
-        condition: 'ds',
-        quantity: null,
-    }));
-
-    let wholeHash = '';
-    words.forEach(w => {
-        wholeHash += w;
-    })
+        ...info,
+    });
 
     return {
         id,
-        hashInfo: wholeHash,
+        hashInfo: dataHash,
     };
 }

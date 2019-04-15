@@ -1,11 +1,11 @@
 import { decorate, observable, runInAction, action } from 'mobx';
 
 class PanelStore {
-    isNoticeOpen = false;
+    isNoticeOpen = observable.box(false);
     message = '';
     variant = 'info';
     
-    isModalOpen = false;
+    isModalOpen = observable.box(false);
     modalTitle = '';
     renderModalContent = () => null;
 
@@ -13,37 +13,36 @@ class PanelStore {
         _modalTitle,
         _renderModalContent,
     }) {
-        console.log('ne ne', _modalTitle);
-        this.isModalOpen = true;
+        this.isModalOpen.set(true);
         this.modalTitle =  _modalTitle;
         this.renderModalContent = _renderModalContent;
     }
 
     closeModal() {
-        this.isModalOpen = false;
+        this.isModalOpen.set(false);
+    }
+
+    closeNotice() {
+        this.isNoticeOpen.set(false);
     }
 
     showNotice({_message, _variant, _duration}) {
-        this.isNoticeOpen = true;
+        this.isNoticeOpen.set(true);
         this.variant = _variant;
         this.message = _message;
-        console.log(_duration, 'duration');
         setTimeout(() => {
             runInAction('close notice',() => {
-                this.isNoticeOpen = false;
+                this.isNoticeOpen.set(false);
             });
         }, _duration);
     }
 
-    closeNotice() {
-        this.isNoticeOpen = false;
-    }
 }
 decorate(PanelStore, {
     isNoticeOpen: observable,
+    isModalOpen: observable,
     message: observable,
     variant: observable,
-    isModalOpen: observable,
     renderModalContent: observable,
     showNotice: action.bound,
     showModal: action.bound,

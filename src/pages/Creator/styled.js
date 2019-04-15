@@ -7,4 +7,9 @@ export const Container = styled.div`
     flex-direction: column;
     height: 200px;
 
+    input {
+        width: 300px;
+        text-align: center;
+    }
+
 `

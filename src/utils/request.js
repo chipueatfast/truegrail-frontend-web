@@ -1,6 +1,6 @@
 export { default as API } from '../api';
 const checkStatusCode = (response) => {
-    if ((response.status >= 200 && response.status <= 300) || (response.status === 400)) {
+    if ((response.status >= 200 && response.status <= 300) || (response.status === 404)) {
         return response;
     }
     const error = new Error(response.statusText);
@@ -9,8 +9,17 @@ const checkStatusCode = (response) => {
 };
 
 const parseJSON = (response) => {
-    if (response.status === 204) {
-        return {};
+    if (response.status >= 400) {
+        return {
+            status: false,
+            statusCode: response.status,
+            err: response.statusText,
+        }
+    }
+    if (response.status === 204 || response.status === 201) {
+        return {
+            status: true,
+        };
     }
    return response.json();
 };

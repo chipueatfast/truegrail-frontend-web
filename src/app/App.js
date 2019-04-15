@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import { BrowserRouter } from 'react-router-dom'; 
+import { Router } from 'react-router-dom'; 
 import RouterGuard from 'react-router-guard';
-import history from './utils/history';
-import routerConfig from './routes/config';
-import UniversalNotice from './UniversalNotice';
-import UniversalModal from './UniversalModal';
+import history from '~/utils/history';
+import routerConfig from '../routes/config';
+import { UniversalNotice, UniversalModal }from '~/universal-components';
 
-import vansLogo from './img/vans_logo.jpg';
+import vansLogo from '~/assets/img/vans_logo.jpg';
 // import { DrizzleProvider } from 'drizzle-react'; 
 // import contractStore from './contracts/contractStore';
 // import drizzleOptions from './contracts/drizzleOptions';
@@ -24,9 +23,9 @@ class App extends Component {
             }} 
             alt='logo'
           />
-          <BrowserRouter history={history}>
+          <Router history={history}>
             <RouterGuard config={routerConfig}/>
-          </BrowserRouter>
+          </Router>
           <UniversalNotice />
           <UniversalModal />
         </div>

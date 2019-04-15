@@ -1,8 +1,8 @@
 import React from 'react';
-import web3Provider from '../MetaMask';
+import web3Provider from '~/MetaMask';
 import Button from '@material-ui/core/Button';
 import { Container, Content, Actions } from './styled';
-import panelStore from '../panelStore';
+import panelStore from '~/stores/panelStore';
 
 export const addOrChangeAccount = async () => {
     const account = await window.ethereum.enable();

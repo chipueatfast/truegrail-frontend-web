@@ -1,12 +1,18 @@
 import { observable, action, decorate } from 'mobx';
 
-import { getItemFromStorage, storeItem } from './utils/localStorage';
+import { getItemFromStorage, storeItem } from '~/utils/localStorage';
 
 class UserStore {
     role;
     address;
 
     constructor() {
+        if (!getItemFromStorage('user')) {
+            const user = {
+            };
+            storeItem('user', JSON.stringify(user));
+        }
+
         const {
             role,
             address,
@@ -22,7 +28,7 @@ class UserStore {
         this[key] = value;
         const user = getItemFromStorage('user');
         user[key] = value;
-        storeItem('user', {...user});
+        storeItem('user', JSON.stringify({...user}));
     }   
 
 }

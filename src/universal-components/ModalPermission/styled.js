@@ -6,6 +6,7 @@ export const Container = styled.div`
     justify-content: center;
     flex-direction: column;
     align-items: center;
+    padding: 15px;
 `
 
 export const Content = styled.span`
@@ -14,7 +15,12 @@ export const Content = styled.span`
 `
 
 export const Actions = styled.div`
+    display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: flex-end;
     align-items: center;
+    margin-top: 10px;
+    button {
+        margin-left: 10px;
+    }
 `
