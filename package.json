@@ -92,8 +92,7 @@
   "scripts": {
     "start": "cross-env NODE_ENV=development node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "exit 0",
-    "build:prod": "cross-env NODE_ENV=production webpack --config ./webpack.config.js"
+    "test": "exit 0"
   },
   "eslintConfig": {
     "extends": "react-app"
