@@ -4,6 +4,7 @@ import { addOrChangeAccount } from './service';
 function SignIn() {
     return (
         <div>
+            <div>Welcome, welcome</div>
             <button
                 onClick={() => {
                     addOrChangeAccount();
