@@ -1,6 +1,7 @@
 import { observable, action, decorate } from 'mobx';
 
-import { getItemFromStorage, storeItem } from '~/utils/localStorage';
+import { getItemFromStorage, storeItem, removeItemFromStorage } from '~/utils/localStorage';
+import history from '~/utils/history';
 
 class UserStore {
     role;
@@ -22,6 +23,11 @@ class UserStore {
         };
         this.role = role;
         this.address = address;
+    }
+
+    logOut() {
+        removeItemFromStorage('user');
+        history.push('/signin');
     }
     
     updateUserProperty = (key, value) => {
