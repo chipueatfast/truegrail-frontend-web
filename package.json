@@ -36,6 +36,7 @@
     "file-loader": "2.0.0",
     "formik": "^1.5.2",
     "fs-extra": "7.0.1",
+    "ganache-cli": "^6.4.3",
     "history": "^4.9.0",
     "html-webpack-plugin": "4.0.0-alpha.2",
     "identity-obj-proxy": "3.0.0",
@@ -64,11 +65,13 @@
     "react-router-guard": "^1.0.4",
     "resolve": "1.10.0",
     "sass-loader": "7.1.0",
+    "shebang-loader": "^0.0.1",
     "style-loader": "0.23.1",
     "styled-components": "^4.2.0",
     "terser-webpack-plugin": "1.2.2",
     "truffle-contract": "^4.0.11",
     "url-loader": "1.1.2",
+    "wallet-address-validator": "^0.2.4",
     "webpack": "4.28.3",
     "webpack-dev-server": "3.1.14",
     "webpack-manifest-plugin": "2.0.4",
@@ -147,5 +150,8 @@
       "/Users/phat.pham/Documents/truegrail-frontend-web/node_modules/jest-watch-typeahead/filename.js",
       "/Users/phat.pham/Documents/truegrail-frontend-web/node_modules/jest-watch-typeahead/testname.js"
     ]
+  },
+  "resolutions": {
+    "web3": "1.0.0-beta.33"
   }
 }

@@ -8,5 +8,7 @@ export default () => {
         getContractCreator: (contractName) => `${server}/contract/creator/${contractName}`,
         getSneakerInfoAndHash: (id) => `${server}/sneaker/${id}`,
         sneaker: () => `${server}/sneaker`,
+        sneakerCollection: (address) => `${server}/user/ownership/${address}`,
+        changeOwnership: () => `${server}/sneaker/ownership`,
     })
 }

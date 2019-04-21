@@ -12,6 +12,8 @@ function Creator() {
             <span>Creator</span>
             <Formik
                 initialValues={{
+                    password: 'offthewall',
+                    physicalAddress: 'Hẻm 141, An Bình, Thành phố Biên Hòa, Đồng Nai',
                     address: '0x8909969a0deA718d996eb1e82e67B484F831909f',
                     brand: 'vans',
                 }}
@@ -28,16 +30,26 @@ function Creator() {
                     }) => (
                         <>
                             <TextField
-                                value={values.brand}
+                                className='text-field'
+                                value={values.physicalAddress}
+                                name='physicalAddress'
+                                onChange={handleChange}
+                                label='Factory Address'
+                            />
+                            <TextField
+                                className='text-field'
+                                value={values.address}
                                 name='address'
                                 onChange={handleChange}
                                 label='Factory Address'
                             />
                             <TextField
-                                value={values.address}
-                                name='address'
+                                className='text-field'
+                                value={values.password}
+                                name='password'
                                 onChange={handleChange}
-                                label='Factory Address'
+                                label='Password'
+                                type='password'
                             />
                             <Button
                                 variant='contained'

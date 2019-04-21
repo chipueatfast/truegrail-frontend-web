@@ -16,7 +16,7 @@ const parseJSON = (response) => {
             err: response.statusText,
         }
     }
-    if (response.status === 204 || response.status === 201) {
+    if (response.status === 204 || response.status === 203 || response.status === 201) {
         return {
             status: true,
         };

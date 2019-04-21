@@ -4,6 +4,7 @@ class PanelStore {
     isNoticeOpen = observable.box(false);
     message = '';
     variant = 'info';
+    currentPage = observable.box('');
     
     isModalOpen = observable.box(false);
     modalTitle = '';

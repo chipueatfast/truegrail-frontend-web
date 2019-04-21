@@ -289,6 +289,10 @@ module.exports = function(webpackEnv) {
     module: {
       strictExportPresence: true,
       rules: [
+        {
+          test: /node_modules\/ganache-cli\/build\/ganache-core.node.cli.js/
+          , loader: 'shebang-loader'
+        },
         // Disable require.ensure as it's not a standard language feature.
         { parser: { requireEnsure: false } },
 

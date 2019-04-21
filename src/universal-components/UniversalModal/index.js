@@ -58,14 +58,17 @@ class UniversalModal extends React.Component {
           aria-labelledby="customized-dialog-title"
           open={isModalOpen.get()}
         >
+          {
+            !!modalTitle &&  
             <DialogTitle
-                onClose={panelStore.closeModal}
+              onClose={panelStore.closeModal}
             >
-                {modalTitle}
+              {modalTitle}
             </DialogTitle>
-            {
-                renderModalContent()
-            }
+          }
+          {
+            renderModalContent()
+          }
         </Dialog>
     );
   }
