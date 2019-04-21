@@ -7,8 +7,16 @@ export const Container = styled.div`
     flex-direction: column;
     height: 200px;
 
+    .text-field {
+        margin-top: 10px;
+    }
+
+    button {
+        margin-top: 15px;
+    }
+
     input {
-        width: 300px;
+        width: 500px;
         text-align: center;
     }
 

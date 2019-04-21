@@ -5,12 +5,18 @@ import history from '~/utils/history';
 import headerConfig from '~/routes/header';
 import routerConfig from '../routes/config';
 import { UniversalNotice, UniversalModal }from '~/universal-components';
+import contractStore from '~/stores/contractStore';
+
 // import { DrizzleProvider } from 'drizzle-react'; 
 // import contractStore from './contracts/contractStore';
 // import drizzleOptions from './contracts/drizzleOptions';
 import './App.css';
 
 class App extends Component {
+  componentDidMount() {
+    contractStore.fetchTrueGrailInstance();
+  }
+
   render() {
     return (
       // <DrizzleProvider store={contractStore} options={drizzleOptions}>

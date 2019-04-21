@@ -36,7 +36,8 @@ const Divider = styled.hr`
 `;
 
 const Error = styled.div`
-  color: '#272727';
+  height: 20px;
+  color: #AE2565;
   text-align: center;
   margin: 20px 0 0;
 

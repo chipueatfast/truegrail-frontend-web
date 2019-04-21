@@ -42,7 +42,6 @@ function Label({
     const [tx, setTx] = React.useState('');
 
     const onSuccess = (tx) => {
-        debugger
         const batchInfo = publishSneakerStore.batchInfo.get();
         setPublishState(2);
         setTx(tx);
@@ -82,7 +81,8 @@ function Label({
                 return (
                 <>
                     <CheckIcon />
-                    <span>{tx}</span>
+                    <span>{data.id}</span>
+                    {/* <span>{tx}</span> */}
                 </>
                 )
             case 3: 

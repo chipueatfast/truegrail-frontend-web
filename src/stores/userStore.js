@@ -28,9 +28,15 @@ class UserStore {
     logOut() {
         removeItemFromStorage('user');
         history.push('/signin');
+        return;
     }
     
     updateUserProperty = (key, value) => {
+        if (!getItemFromStorage('user')) {
+            const user = {
+            };
+            storeItem('user', JSON.stringify(user));
+        }
         this[key] = value;
         const user = getItemFromStorage('user');
         user[key] = value;

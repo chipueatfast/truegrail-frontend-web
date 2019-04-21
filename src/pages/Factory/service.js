@@ -3,23 +3,26 @@ import randomBytes from 'randombytes';
 import hash from 'object-hash';
 import web3Provider from '~/MetaMask';
 
+import contractStore from '~/stores/contractStore';
 import TrueGrailTokenContract from '~/contracts/TrueGrailToken';
 import userStore from '~/stores/userStore';
 
 
 export async function issueSneaker(id, hashInfo, onSuccess, onError) {
-    const instance = await TrueGrailTokenContract();
-    try {
-        const ethCall = await instance.issueToken(id, hashInfo, {
-            from: userStore.address,
-        });
-
-        if (ethCall && ethCall.tx) {
-            onSuccess(ethCall.tx);
+    const instance = await contractStore.getTrueGrailInstance();
+    if (instance) {
+        try {
+            const ethCall = await instance.issueToken(id, hashInfo, {
+                from: userStore.address,
+            }).on('error', e => {
+                debugger
+            });
+            if (ethCall && ethCall.tx) {
+                onSuccess(ethCall.tx);
+            }
+        } catch(e) {
+            onError();
         }
-    } catch(e) {
-        onError();
-        console.log(web3Provider.eth.defaultAccount);
     }
 }
 
