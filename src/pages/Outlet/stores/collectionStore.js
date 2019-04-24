@@ -5,8 +5,8 @@ import userStore from '~/stores/userStore';
 import { checkOwnership } from '../service';
 
 class CollectionStore {
-    @observable sneakers = observable([]);
-    @observable fetched = observable.box(false);
+    sneakers = observable([]);
+    fetched = observable.box(false);
 
     @action.bound
     async fetchCollection() {

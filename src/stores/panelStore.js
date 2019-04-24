@@ -4,6 +4,7 @@ class PanelStore {
     isNoticeOpen = observable.box(false);
     message = '';
     variant = 'info';
+
     currentPage = observable.box('');
     
     isModalOpen = observable.box(false);
@@ -40,11 +41,6 @@ class PanelStore {
 
 }
 decorate(PanelStore, {
-    isNoticeOpen: observable,
-    isModalOpen: observable,
-    message: observable,
-    variant: observable,
-    renderModalContent: observable,
     showNotice: action.bound,
     showModal: action.bound,
     closeModal: action.bound,
