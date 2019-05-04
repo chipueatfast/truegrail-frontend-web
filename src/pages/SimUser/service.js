@@ -1,4 +1,5 @@
 import contractStore from '~/stores/contractStore';
+import request, { API } from '~/utils/request';
 
 export const claimSneaker = async (address, sneakerId) => {
     const instance = contractStore.getTrueGrailInstance();
@@ -10,10 +11,18 @@ export const claimSneaker = async (address, sneakerId) => {
         instance.Transfer({
             _to: address,
             _tokenId: sneakerId,
-        }).on('data', (e) => {
-            console.log(e);
+        }).on('data',(e) => {
             if (e.returnValues) {
-                console.log('The transaction pulled off~!');
+                setTimeout(async () => {
+                    const checkInfo = await request({
+                        url: API().getSneakerInfoAndHash(e.returnValues._tokenId),
+                        method: 'GET',
+                    });
+                    console.log('check ', checkInfo);
+                    if (checkInfo.hash === e.returnValues.newHash) {
+                        console.log('The transaction pulled off~!');
+                    }
+                }, 3000);
             }
         })
     }

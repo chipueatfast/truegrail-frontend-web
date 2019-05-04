@@ -49,7 +49,7 @@ function ItemCard({
                     color='primary'
                     variant='contained'
                     onClick={() => {
-                        showTransferModal(info.id)
+                        showTransferModal(info)
                     }}
                 >
                     Transfer

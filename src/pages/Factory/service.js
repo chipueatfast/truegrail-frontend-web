@@ -15,7 +15,7 @@ export async function issueSneaker(id, hashInfo, onSuccess, onError) {
             const ethCall = await instance.issueToken(id, hashInfo, {
                 from: userStore.address,
             }).on('error', e => {
-                debugger
+
             });
             if (ethCall && ethCall.tx) {
                 onSuccess(ethCall.tx);

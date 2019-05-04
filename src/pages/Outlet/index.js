@@ -10,12 +10,13 @@ import { Container } from './styled';
 class Outlet extends React.Component {
 
     componentDidUpdate() {
-        if (contractStore.getTrueGrailInstance() && !collectionStore.fetched.get()) {
+        if (contractStore.getTrueGrailInstance() && !collectionStore.fetched) {
             collectionStore.fetchCollection();
         } 
     }
 
     render() {
+        console.log(collectionStore.sneakers);
         return (
             <Container>
                 {

@@ -5,12 +5,12 @@ import userStore from '~/stores/userStore';
 import { checkOwnership } from '../service';
 
 class CollectionStore {
-    sneakers = observable([]);
-    fetched = observable.box(false);
+    @observable sneakers = [];
+    @observable fetched = false;
 
     @action.bound
     async fetchCollection() {
-        this.fetched.set(true);
+        this.fetched = true;
         const rs = await request({
             url: API().sneakerCollection(userStore.address),
             method: 'GET',
@@ -26,13 +26,13 @@ class CollectionStore {
 
     @action.bound
     async removeSneaker(sneakerId, newAddress) {
-        this.sneakers = this.sneakers.filter(snkr => toJS(snkr).id !== Number(sneakerId));
+        this.sneakers = this.sneakers.filter(snkr => snkr.id !== Number(sneakerId));
         const rs = await request({
             url: API().changeOwnership(),
             method: 'PATCH',
             body: {
                 sneakerId,
-                newAddress,
+                newAddress: newAddress.toLowerCase(),
             }
         });
         if (rs.status) {

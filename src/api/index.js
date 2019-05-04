@@ -10,5 +10,6 @@ export default () => {
         sneaker: () => `${server}/sneaker`,
         sneakerCollection: (address) => `${server}/user/ownership/${address}`,
         changeOwnership: () => `${server}/sneaker/ownership`,
+        
     })
 }

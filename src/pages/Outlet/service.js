@@ -3,21 +3,28 @@ import userStore from '~/stores/userStore';
 import contractStore from '~/stores/contractStore';
 import collectionStore from './stores/collectionStore';
 
+// import { toJS } from 'mobx';
+
+import hash from 'object-hash';
+
 import { showModal, closeModal, showAlertModal } from '~/utils/modal';
 import { showNotice } from '~/utils/notice';
 
 import TransferModal from './TransferModal';
+import { toJS } from 'mobx';
 
 export const checkOwnership = async (id) => {
     const contractInstance = await contractStore.getTrueGrailInstance();
     if (contractInstance) {
         const tokenOwner = await contractInstance.ownerOf(id);
-        console.log(id, tokenOwner, userStore.address);
         return tokenOwner.toLowerCase() === userStore.address;
     }
 }
 
-export const transferSneaker = async (id, toAddress) => {
+export const transferSneaker = async (sneakerInfo, toAddress) => {
+    const {
+        id,
+    } = sneakerInfo;
     const instance = await contractStore.getTrueGrailInstance();
     if (instance) {
         const transferEvent = instance.Transfer({
@@ -26,28 +33,33 @@ export const transferSneaker = async (id, toAddress) => {
 
 
         transferEvent.on('data', e => {
+            console.log('sao lai k mua');
             collectionStore.removeSneaker(e.returnValues._tokenId, e.returnValues._to);
             
             closeModal();
         });
 
-        instance.transfer(toAddress, id, {
+        sneakerInfo.ownerAddress = toAddress.toLowerCase();
+        delete sneakerInfo.createdAt;
+        delete sneakerInfo.updatedAt;
+
+        instance.transfer(toAddress, id, hash(sneakerInfo), {
             from: userStore.address,
         }).on('error', (e) => {
             if (e.message.search('User denied transaction signature.') !== -1) {
                 showNotice('info', 'You canceled the transaction');
             }
             if (e.message.search('Sender is not authorized') !== -1) {
-                showAlertModal('This sneaker is longer belogn to you');
+                showAlertModal('This sneaker is no longer belogn to you');
                 closeModal();
             }
         });
     }
 }
 
-export const showTransferModal = (sneakerId) => {
+export const showTransferModal = (sneakerInfo) => {
     showModal(
         'Change ownership',
-        () => (<TransferModal sneakerId={sneakerId} />)
+        () => (<TransferModal sneakerId={sneakerInfo} />)
     )
 }
