@@ -1,7 +1,6 @@
 
 import randomBytes from 'randombytes';
-import hash from 'object-hash';
-import web3Provider from '~/MetaMask';
+import SHA256 from 'crypto-js/sha256';
 
 import contractStore from '~/stores/contractStore';
 import TrueGrailTokenContract from '~/contracts/TrueGrailToken';
@@ -39,15 +38,25 @@ export function generateSneakerId(quantity) {
     return ids;
 }
 
-export function hashInitInfoJSON(id, info) {
+function sortToGivenOrder(object) {
+    const orderedObject = {};
+    const keys = ["id", "brand", "model", "colorway", "limitedEdition","releaseDate","size", "condition", "ownerAddress"];
+    keys.forEach(key => {
+        orderedObject[key] = object[key];
+    });
+    return orderedObject;
+}
+
+export function hashUnorderedJSON(id, info) {
     delete info.quantity;
-    const dataHash = hash({
+    const orderedObject = sortToGivenOrder({
         id,
         ...info,
     });
+    const hashInfo = SHA256(JSON.stringify(orderedObject)).toString();
 
     return {
         id,
-        hashInfo: dataHash,
+        hashInfo,
     };
 }

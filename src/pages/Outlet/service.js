@@ -1,17 +1,11 @@
 import React from 'react';
 import userStore from '~/stores/userStore';
 import contractStore from '~/stores/contractStore';
-import collectionStore from './stores/collectionStore';
-
-// import { toJS } from 'mobx';
-
-import hash from 'object-hash';
-
 import { showModal, closeModal, showAlertModal } from '~/utils/modal';
 import { showNotice } from '~/utils/notice';
-
+import { hashUnorderedJSON } from '~/pages/Factory/service';
 import TransferModal from './TransferModal';
-import { toJS } from 'mobx';
+import collectionStore from './stores/collectionStore';
 
 export const checkOwnership = async (id) => {
     const contractInstance = await contractStore.getTrueGrailInstance();
@@ -33,17 +27,14 @@ export const transferSneaker = async (sneakerInfo, toAddress) => {
 
 
         transferEvent.on('data', e => {
-            console.log('sao lai k mua');
             collectionStore.removeSneaker(e.returnValues._tokenId, e.returnValues._to);
             
             closeModal();
         });
 
-        sneakerInfo.ownerAddress = toAddress.toLowerCase();
-        delete sneakerInfo.createdAt;
-        delete sneakerInfo.updatedAt;
+        sneakerInfo.ownerAddress = toAddress;
 
-        instance.transfer(toAddress, id, hash(sneakerInfo), {
+        instance.transfer(toAddress, id, hashUnorderedJSON(sneakerInfo), {
             from: userStore.address,
         }).on('error', (e) => {
             if (e.message.search('User denied transaction signature.') !== -1) {

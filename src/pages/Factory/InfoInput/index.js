@@ -8,9 +8,8 @@ import { Formik, Field } from 'formik';
 import { FormLayout } from '~/tg-ui';
 import userStore from '~/stores/userStore';
 import { Container } from './styled';
-import {generateSneakerId, hashInitInfoJSON} from '../service';
+import {generateSneakerId, hashUnorderedJSON} from '../service';
 import publishSneakerStore from '../stores/publishSneakerStore';
-
 
 function InfoInput(props) {
     const initialValues = {
@@ -35,8 +34,10 @@ function InfoInput(props) {
                         size: parseFloat(values.size),
                     });
                     const idBatch = generateSneakerId(values.quantity);
+
                     idBatch.forEach(id => {
-                        publishSneakerStore.addLabel(hashInitInfoJSON(id, publishSneakerStore.batchInfo.get()));
+                        publishSneakerStore.addLabel(hashUnorderedJSON(id,
+                             publishSneakerStore.batchInfo.get()));
                     });
                   }}
             >
