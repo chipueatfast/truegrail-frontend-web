@@ -19,7 +19,7 @@ class GeneratedLabels extends React.Component {
                     {
                         labels.map(label => (
                             <Label
-                                key={label.id}
+                                key={label}
                                 data={label}
                             />
                         ))

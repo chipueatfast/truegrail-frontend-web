@@ -1,17 +1,38 @@
 
 import randomBytes from 'randombytes';
 import SHA256 from 'crypto-js/sha256';
-
+import { toJS } from 'mobx';
 import contractStore from '~/stores/contractStore';
 import TrueGrailTokenContract from '~/contracts/TrueGrailToken';
 import userStore from '~/stores/userStore';
+import request, { API } from 'utils/request';
+import { showNotice } from '~/utils/notice';
 
 
-export async function issueSneaker(id, hashInfo, onSuccess, onError) {
+export async function issueSneaker(id, batchInfo, onSuccess, onError) {
+    const sneakerInfo = {
+        id,
+        ...batchInfo,
+    };
+
     const instance = await contractStore.getTrueGrailInstance();
+    request({
+        url: API().sneaker(),
+        method: 'POST',
+        body: sneakerInfo,
+    }).then(
+        rs => {
+            if (!rs.status) {
+                showNotice('error', 'Can not issue this sneaker');
+            }
+        }
+    );
+   
     if (instance) {
         try {
-            const ethCall = await instance.issueToken(id, hashInfo, {
+            console.log(toJS(sneakerInfo));
+            const hash = hashUnorderedJSON(sneakerInfo);
+            const ethCall = await instance.issueToken(id, hash, {
                 from: userStore.address,
             }).on('error', e => {
 
@@ -20,6 +41,7 @@ export async function issueSneaker(id, hashInfo, onSuccess, onError) {
                 onSuccess(ethCall.tx);
             }
         } catch(e) {
+            console.log(e);
             onError();
         }
     }
@@ -47,16 +69,8 @@ function sortToGivenOrder(object) {
     return orderedObject;
 }
 
-export function hashUnorderedJSON(id, info) {
-    delete info.quantity;
-    const orderedObject = sortToGivenOrder({
-        id,
-        ...info,
-    });
+export function hashUnorderedJSON(sneaker) {
+    const orderedObject = sortToGivenOrder(sneaker);
     const hashInfo = SHA256(JSON.stringify(orderedObject)).toString();
-
-    return {
-        id,
-        hashInfo,
-    };
+    return hashInfo;
 }
