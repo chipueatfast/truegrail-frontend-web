@@ -16,14 +16,6 @@ class Factory extends React.Component {
             <Container>
                 <InfoInput />
                 <GeneratedLabels />
-                {/* <button
-                    onClick={async () => {
-                        const firstFactory = await getFirstFactory();
-                        alert(firstFactory);
-                    }}
-                >
-                    Get first factory
-                </button> */}
             </Container>
         )
     }

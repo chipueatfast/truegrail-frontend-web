@@ -29,16 +29,16 @@ function InfoInput(props) {
                 initialValues={initialValues}
                 onSubmit={(values, { setSubmitting }) => {
                     setSubmitting(true);
-                    publishSneakerStore.batchInfo.set({
+                    publishSneakerStore.setLabels(generateSneakerId(values.quantity));
+                    delete values.quantity;
+                    publishSneakerStore.setBatchInfo({
                         ...values,
                         size: parseFloat(values.size),
                     });
-                    const idBatch = generateSneakerId(values.quantity);
-
-                    idBatch.forEach(id => {
-                        publishSneakerStore.addLabel(hashUnorderedJSON(id,
-                             publishSneakerStore.batchInfo.get()));
-                    });
+                    // console.log({
+                    //     ...values,
+                    //     size: parseFloat(values.size),
+                    // });
                   }}
             >
                 {

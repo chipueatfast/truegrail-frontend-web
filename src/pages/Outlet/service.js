@@ -4,8 +4,10 @@ import contractStore from '~/stores/contractStore';
 import { showModal, closeModal, showAlertModal } from '~/utils/modal';
 import { showNotice } from '~/utils/notice';
 import { hashUnorderedJSON } from '~/pages/Factory/service';
+import request, { API } from '~/utils/request';
 import TransferModal from './TransferModal';
 import collectionStore from './stores/collectionStore';
+
 
 export const checkOwnership = async (id) => {
     const contractInstance = await contractStore.getTrueGrailInstance();
@@ -19,19 +21,21 @@ export const transferSneaker = async (sneakerInfo, toAddress) => {
     const {
         id,
     } = sneakerInfo;
+    request({
+        url: API().changeOwnership(),
+        method: 'PATCH',
+        body: {
+            sneakerId: sneakerInfo.id,
+            newAddress: toAddress,
+        }
+    }).then(rs => {
+        if (rs.status) {
+            collectionStore.removeSneaker(sneakerInfo.id, toAddress);
+            closeModal();
+        }
+    });
     const instance = await contractStore.getTrueGrailInstance();
     if (instance) {
-        const transferEvent = instance.Transfer({
-            _tokenId: id,
-        });
-
-
-        transferEvent.on('data', e => {
-            collectionStore.removeSneaker(e.returnValues._tokenId, e.returnValues._to);
-            
-            closeModal();
-        });
-
         sneakerInfo.ownerAddress = toAddress;
 
         instance.transfer(toAddress, id, hashUnorderedJSON(id, sneakerInfo).hashInfo, {

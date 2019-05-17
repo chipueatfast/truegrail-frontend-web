@@ -1,17 +1,5 @@
-import request, { API } from 'utils/request';
-import panelStore from '~/stores/panelStore'; 
+import { showNotice } from 'utils/notice';
 
-export const addSneakerToDatabase = async (data) => {
-    const rs = await request({
-        url: API().sneaker(),
-        method: 'POST',
-        body: data,
-    });
-    if (rs.status) {
-        panelStore.showNotice({
-            _variant: 'info',
-            _message: 'Successfully issued',
-            _duration: '5000', 
-        })
-    }
+export const notifyNewSneaker = async (sneakerId) => {
+    showNotice('info',`Successfully issued sneaker no.${sneakerId}`);
 }

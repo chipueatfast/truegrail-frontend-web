@@ -2,7 +2,7 @@ import { observable, action } from 'mobx';
 
 class publishSneakerStore {
 
-    batchInfo = observable.box({
+    @observable batchInfo = {
         brand: '',
         model: '',
         size: '',
@@ -10,13 +10,19 @@ class publishSneakerStore {
         releaseDate: undefined,
         quantity: 0,
         limitedEdition: undefined,
-    })
+    };
     
-    labels = observable.array([]);
+    @observable labels = [];
+
+    // label is the ID of sneaker
+    @action.bound
+    setLabels(labels) {
+        this.labels = labels;
+    }
 
     @action.bound
-    addLabel(label) {
-        this.labels.push(label);
+    setBatchInfo(batchInfo) {
+        this.batchInfo = batchInfo;
     }
 }
 

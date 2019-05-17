@@ -27,17 +27,7 @@ class CollectionStore {
     @action.bound
     async removeSneaker(sneakerId, newAddress) {
         this.sneakers = this.sneakers.filter(snkr => snkr.id !== Number(sneakerId));
-        const rs = await request({
-            url: API().changeOwnership(),
-            method: 'PATCH',
-            body: {
-                sneakerId,
-                newAddress: newAddress.toLowerCase(),
-            }
-        });
-        if (rs.status) {
-            showNotice('success', 'Tell your buyer to check her/his inventory');
-        }
+        showNotice('success', `Tell your buyer of ${sneakerId} to check her/his inventory (at ${newAddress})`);
     }
 }
 
