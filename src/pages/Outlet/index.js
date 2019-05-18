@@ -16,7 +16,7 @@ class Outlet extends React.Component {
     }
 
     render() {
-        console.log(collectionStore.sneakers);
+
         return (
             <Container>
                 {

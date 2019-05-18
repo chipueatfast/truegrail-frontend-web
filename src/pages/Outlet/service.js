@@ -38,7 +38,7 @@ export const transferSneaker = async (sneakerInfo, toAddress) => {
     if (instance) {
         sneakerInfo.ownerAddress = toAddress;
 
-        instance.transfer(toAddress, id, hashUnorderedJSON(id, sneakerInfo).hashInfo, {
+        instance.transfer(toAddress, id, hashUnorderedJSON(id, sneakerInfo), {
             from: userStore.address,
         }).on('error', (e) => {
             if (e.message.search('User denied transaction signature.') !== -1) {
