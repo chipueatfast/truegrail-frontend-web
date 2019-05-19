@@ -66,6 +66,7 @@ function sortToGivenOrder(object) {
     keys.forEach(key => {
         orderedObject[key] = object[key];
     });
+    orderedObject.ownerAddress = orderedObject.ownerAddress.toLowerCase();
     return orderedObject;
 }
 
