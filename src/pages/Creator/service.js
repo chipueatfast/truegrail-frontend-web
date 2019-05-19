@@ -45,7 +45,7 @@ export const addFactory = async (address, brand) => {
             url: API().createFactory(),
             method: 'POST',
             body: {
-                blockchainAddress: address.toLowerCase(),
+                blockchainAddress: address,
                 brand,
             },
         });
