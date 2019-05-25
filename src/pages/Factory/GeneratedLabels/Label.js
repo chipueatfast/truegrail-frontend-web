@@ -72,7 +72,6 @@ class LabelC extends React.Component {
 
         const batchInfo = publishSneakerStore.batchInfo;
         
-        console.log(toJS(batchInfo));
         switch (publishState) {
             case 0: 
                 return (

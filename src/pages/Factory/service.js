@@ -30,7 +30,7 @@ export async function issueSneaker(id, batchInfo, onSuccess, onError) {
    
     if (instance) {
         try {
-            console.log(toJS(sneakerInfo));
+            // console.log(toJS(sneakerInfo));
             const hash = hashUnorderedJSON(sneakerInfo);
             const ethCall = await instance.issueToken(id, hash, {
                 from: userStore.address,
@@ -66,8 +66,8 @@ function sortToGivenOrder(object) {
     keys.forEach(key => {
         orderedObject[key] = object[key];
     });
-    console.log(object);
-    debugger
+    // console.log(object);
+    // debugger
     orderedObject.ownerAddress = orderedObject.ownerAddress.toLowerCase();
     return orderedObject;
 }
