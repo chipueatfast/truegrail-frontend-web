@@ -5,7 +5,7 @@ import request, { API } from '~/utils/request';
 
 async function TrueGrailTokenJS() {
     const TrueGrailToken = await request({
-        url: API().contract('truegrailtoken'),
+        url: API().contract(),
         method: 'GET',
     });
     const TrueGrailTokenContract = TruffleContract(JSON.parse(TrueGrailToken.jsonContent));
