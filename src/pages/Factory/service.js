@@ -32,8 +32,10 @@ export async function issueSneaker(id, batchInfo, onSuccess, onError) {
         try {
             // console.log(toJS(sneakerInfo));
             const hash = hashUnorderedJSON(sneakerInfo);
+            console.log(instance.issueToken);
+            console.log(id, hash);
             const ethCall = await instance.issueToken(
-                id, hash, 
+                id, hash,
             {
                 from: userStore.address,
             }).on('error', e => {

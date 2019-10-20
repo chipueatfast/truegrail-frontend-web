@@ -24,12 +24,11 @@ class ContractStore {
     @action.bound
     async fetchTrueGrailInstance() {
         const TrueGrailToken = await request({
-            url: API().contract('truegrailtoken'),
+            url: API().contract(),
             method: 'GET',
         });
-        const TrueGrailTokenContract = TruffleContract(JSON.parse(TrueGrailToken.jsonContent));
+        const TrueGrailTokenContract = TruffleContract(TrueGrailToken);
         TrueGrailTokenContract.setProvider(web3Provider.currentProvider);
-        TrueGrailTokenContract.defaults({from: web3Provider.eth.defaultAccount});
         this.trueGrailInstance.set(await TrueGrailTokenContract.deployed());
     }
 }

@@ -5,7 +5,6 @@ export default () => {
         contract: (contractName) => `${server}/contract/`,
         getFactory: (address) => `${server}/factory/${address}`,
         createFactory: () => `${server}/factory`,
-        getContractCreator: (contractName) => `${server}/contract/creator/${contractName}`,
         getSneakerInfoAndHash: (id) => `${server}/sneaker/${id}`,
         sneaker: () => `${server}/sneaker`,
         sneakerCollection: (address) => `${server}/user/ownership/${address}`,
