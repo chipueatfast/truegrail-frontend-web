@@ -1,9 +1,9 @@
 import React from 'react';
-import TrueGrailTokenContract from '~/contracts/TrueGrailToken';
+import trueGrailTokenContract from '~/singletons/trueGrailTokenContract';
 
 import request, { API } from '~/utils/request';
 import panelStore from '~/stores/panelStore';
-import web3Provider from '~/MetaMask';
+import web3Provider from '~/singletons/web3Provider';
  
 import ModalPermission from '~/universal-components/ModalPermission';
 
@@ -35,10 +35,8 @@ export const showAddFactoryPermissionModal = async (address, brand) => {
 }
 
 export const addFactory = async (address, brand) => {
-    const instance = await TrueGrailTokenContract();
-
     try {
-        const ethCall = await instance.addFactory(address, {
+        await trueGrailTokenContract().addFactory(address, {
             from: web3Provider.eth.defaultAccount
         });
         const rs = await request({

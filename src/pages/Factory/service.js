@@ -1,12 +1,10 @@
 
 import randomBytes from 'randombytes';
 import SHA256 from 'crypto-js/sha256';
-import { toJS } from 'mobx';
-import contractStore from '~/stores/contractStore';
-import TrueGrailTokenContract from '~/contracts/TrueGrailToken';
 import userStore from '~/stores/userStore';
 import request, { API } from 'utils/request';
 import { showNotice } from '~/utils/notice';
+import trueGrailTokenContract from '~/singletons/trueGrailTokenContract';
 
 
 export async function issueSneaker(id, batchInfo, onSuccess, onError) {
@@ -15,7 +13,6 @@ export async function issueSneaker(id, batchInfo, onSuccess, onError) {
         ...batchInfo,
     };
 
-    const instance = await contractStore.getTrueGrailInstance();
     request({
         url: API().sneaker(),
         method: 'POST',
@@ -28,13 +25,11 @@ export async function issueSneaker(id, batchInfo, onSuccess, onError) {
         }
     );
    
-    if (instance) {
+    if (trueGrailTokenContract()) {
         try {
             // console.log(toJS(sneakerInfo));
             const hash = hashUnorderedJSON(sneakerInfo);
-            console.log(instance.issueToken);
-            console.log(id, hash);
-            const ethCall = await instance.issueToken(
+            const ethCall = await trueGrailTokenContract().issueToken(
                 id, hash,
             {
                 from: userStore.address,
@@ -49,11 +44,6 @@ export async function issueSneaker(id, batchInfo, onSuccess, onError) {
             onError();
         }
     }
-}
-
-export async function getFirstFactory() {
-    const instance = await TrueGrailTokenContract();
-    return instance.factories(0);
 }
 
 export function generateSneakerId(quantity) {

@@ -1,28 +1,20 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 
-import { collectionStore } from './stores';
-import contractStore from '~/stores/contractStore';
+import { collectionStore } from './stores/index';
 import ItemCard from './ItemCard';
 import { Container } from './styled';
+import trueGrailTokenContract from '~/singletons/trueGrailTokenContract';
 
 @observer
 class Outlet extends React.Component {
-
-    componentDidUpdate() {
-        if (contractStore.getTrueGrailInstance() && !collectionStore.fetched) {
-            collectionStore.fetchCollection();
-        } 
+    componentDidMount() {
+        collectionStore.fetchCollection();
     }
 
     render() {
-
         return (
             <Container>
-                {
-                    !contractStore.getTrueGrailInstance() && (
-                        <div> Fetching... </div>)
-                }
                 {
                     collectionStore.sneakers.map(snk => {
                         return (<ItemCard info={snk} key = {snk.id} />)

@@ -1,14 +1,13 @@
-import contractStore from '~/stores/contractStore';
+import trueGrailTokenContract from '~/singletons/trueGrailTokenContract';
 import request, { API } from '~/utils/request';
 
 export const claimSneaker = async (address, sneakerId) => {
-    const instance = contractStore.getTrueGrailInstance();
-    if (instance) {
-        const ownerAddress = await instance.ownerOf(sneakerId);
+    if (trueGrailTokenContract()) {
+        const ownerAddress = await trueGrailTokenContract().ownerOf(sneakerId);
         if (address === ownerAddress) {
             console.log('You are the owner of this sneaker');
         }
-        instance.Transfer({
+        trueGrailTokenContract().Transfer({
             _to: address,
             _tokenId: sneakerId,
         }).on('data',(e) => {

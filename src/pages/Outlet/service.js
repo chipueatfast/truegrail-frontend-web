@@ -1,6 +1,6 @@
 import React from 'react';
+import trueGrailTokenContract from '~/singletons/trueGrailTokenContract';
 import userStore from '~/stores/userStore';
-import contractStore from '~/stores/contractStore';
 import { showModal, closeModal, showAlertModal } from '~/utils/modal';
 import { showNotice } from '~/utils/notice';
 import { hashUnorderedJSON } from '~/pages/Factory/service';
@@ -10,11 +10,8 @@ import collectionStore from './stores/collectionStore';
 
 
 export const checkOwnership = async (id) => {
-    const contractInstance = await contractStore.getTrueGrailInstance();
-    if (contractInstance) {
-        const tokenOwner = await contractInstance.ownerOf(id);
-        return tokenOwner.toLowerCase() === userStore.address;
-    }
+    const tokenOwner = await trueGrailTokenContract().ownerOf(id);
+    return tokenOwner.toLowerCase() === userStore.address;
 }
 
 export const transferSneaker = async (sneakerInfo, toAddress) => {
@@ -34,11 +31,10 @@ export const transferSneaker = async (sneakerInfo, toAddress) => {
             closeModal();
         }
     });
-    const instance = await contractStore.getTrueGrailInstance();
-    if (instance) {
+    if (trueGrailTokenContract()) {
         sneakerInfo.ownerAddress = toAddress;
 
-        instance.transfer(toAddress, id, hashUnorderedJSON(sneakerInfo), {
+        trueGrailTokenContract().transfer(toAddress, id, hashUnorderedJSON(sneakerInfo), {
             from: userStore.address,
         }).on('error', (e) => {
             if (e.message.search('User denied transaction signature.') !== -1) {

@@ -1,5 +1,6 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
+import history from '~/utils/history';
 
 import userStore from '~/stores/userStore';
 import panelStore from '~/stores/panelStore';
@@ -16,7 +17,8 @@ class Header extends React.Component {
         console.log(panelStore.currentPage.get());
         return (
             <Container>
-                 <img src={vansLogo} 
+                 <img src={vansLogo}
+                    onClick={() => history.push('/')}
                     style={{
                     height: 50,
                     width: 50,
