@@ -7,9 +7,15 @@ import userStore from '~/stores/userStore';
 import panelStore from '~/stores/panelStore';
 import { AlertModal } from '~/tg-ui';
 
+import { callSmartContractMethod } from '~/utils/smartContract';
+
 export const addOrChangeAccount = async (account) => {
         userStore.updateUserProperty('address', account);
-        const creatorAddress = await trueGrailTokenContract().getCreator();
+        const creatorAddress = await callSmartContractMethod({
+            isPureGet: true,
+            method: trueGrailTokenContract().methods.getCreator(),
+        })
+        console.log(creatorAddress);
         if (creatorAddress === account) {
             userStore.updateUserProperty('role', 'creator');
             history.push('/creator');

@@ -4,6 +4,7 @@ import trueGrailTokenContract from '~/singletons/trueGrailTokenContract';
 import request, { API } from '~/utils/request';
 import panelStore from '~/stores/panelStore';
 import web3Provider from '~/singletons/web3Provider';
+import { getItemFromStorage } from '~/utils/localStorage';
  
 import ModalPermission from '~/universal-components/ModalPermission';
 
@@ -36,8 +37,10 @@ export const showAddFactoryPermissionModal = async (address, brand) => {
 
 export const addFactory = async (address, brand) => {
     try {
+        console.log(trueGrailTokenContract());
+        debugger
         await trueGrailTokenContract().addFactory(address, {
-            from: web3Provider.eth.defaultAccount
+            from: getItemFromStorage('user').address,
         });
         const rs = await request({
             url: API().createFactory(),

@@ -27,7 +27,7 @@ function AccountPermissionModal({
                     color='primary'
                     onClick={
                         async () => {
-                            await addOrChangeAccount();
+                            // await addOrChangeAccount();
                             onAcceptCallback();
                         }
                     }
