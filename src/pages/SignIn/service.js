@@ -7,13 +7,10 @@ import userStore from '~/stores/userStore';
 import panelStore from '~/stores/panelStore';
 import { AlertModal } from '~/tg-ui';
 
-export const addOrChangeAccount = () => {
-    window.ethereum.enable().then(async (account) => {
-        const defaultAccount = account[0];
-        web3Provider().eth.defaultAccount = defaultAccount;
-        userStore.updateUserProperty('address', defaultAccount);
+export const addOrChangeAccount = async (account) => {
+        userStore.updateUserProperty('address', account);
         const creatorAddress = await trueGrailTokenContract().getCreator();
-        if (creatorAddress.toLowerCase() === account[0]) {
+        if (creatorAddress === account) {
             userStore.updateUserProperty('role', 'creator');
             history.push('/creator');
             return;
@@ -21,7 +18,7 @@ export const addOrChangeAccount = () => {
 
 
         const factory = await request({
-            url: API().getFactory(account[0]),
+            url: API().getFactory(account),
             method: 'GET',
         });
 
@@ -35,5 +32,4 @@ export const addOrChangeAccount = () => {
             _modalTitle: 'Alert',
             _renderModalContent: () => <AlertModal announcement='Indentity not found' />
         })
-    })
 }
