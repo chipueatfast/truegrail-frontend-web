@@ -9,7 +9,7 @@ const promisifiedSendSigned = promisify(web3Provider().eth.sendSignedTransaction
 export async function callSmartContractMethod({
     isPureGet,
     method,
-    parameters,
+    privateKey,
 }) {
     const address = getItemFromStorage('user') ? getItemFromStorage('user').address : '';
     const nonce = address ? await web3Provider().eth.getTransactionCount(address) : '0x00';
@@ -29,6 +29,7 @@ export async function callSmartContractMethod({
         return callbackResult;
     }
     const tx = new EthereumTx(txParams, {  hardfork: 'petersburg' });
+    tx.sign(Buffer.from(privateKey, 'hex'));
     const rawTx = `0x${tx.serialize().toString('hex')}`;
-
+    return promisifiedSendSigned(rawTx);
 }

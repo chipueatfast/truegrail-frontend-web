@@ -1,13 +1,32 @@
 
+import React from 'react';
 import randomBytes from 'randombytes';
 import SHA256 from 'crypto-js/sha256';
-import userStore from '~/stores/userStore';
 import request, { API } from 'utils/request';
 import { showNotice } from '~/utils/notice';
 import trueGrailTokenContract from '~/singletons/trueGrailTokenContract';
+import { callSmartContractMethod } from '~/utils/smartContract';
+import ModalPermission from '~/universal-components/ModalPermission/index';
+import { showModal, closeModal } from '~/utils/modal';
 
+export const notifyNewSneaker = async (sneakerId) => {
+    showNotice('info',`Successfully issued sneaker no.${sneakerId}`);
+}
 
-export async function issueSneaker(id, batchInfo, onSuccess, onError) {
+export function showIssueSneakerPermissionModal(issueSneakerParams) {
+    showModal(
+        'Issue sneaker',
+        () => (
+            <ModalPermission
+                message="Provide Private Key"
+                onAcceptCallback={(privateKey) => {
+                    issueSneakerHandler({privateKey, ...issueSneakerParams})
+                }}
+            />
+        ));
+}
+
+export async function issueSneakerHandler({privateKey, id, batchInfo, onSuccess, onError}) {
     const sneakerInfo = {
         id,
         ...batchInfo,
@@ -29,18 +48,16 @@ export async function issueSneaker(id, batchInfo, onSuccess, onError) {
         try {
             // console.log(toJS(sneakerInfo));
             const hash = hashUnorderedJSON(sneakerInfo);
-            const ethCall = await trueGrailTokenContract().issueToken(
-                id, hash,
-            {
-                from: userStore.address,
-            }).on('error', e => {
-
-            });
-            if (ethCall && ethCall.tx) {
-                onSuccess(ethCall.tx);
-            }
+            const method = trueGrailTokenContract().methods.issueToken(id, hash);
+            const tx = await callSmartContractMethod({
+                method,
+                privateKey,
+            })
+            closeModal();
+            onSuccess(tx);
         } catch(e) {
             console.log(e);
+            showNotice('error', e.message, 5000);
             onError();
         }
     }

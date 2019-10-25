@@ -1,8 +1,10 @@
 import React from 'react';
+import { Formik } from 'formik';
 import web3Provider from '~/singletons/web3Provider';
-import Button from '@material-ui/core/Button';
+import { TextField, Button } from '@material-ui/core';
 import { Container, Content, Actions } from './styled';
 import panelStore from '~/stores/panelStore';
+import { showNotice } from '~/utils/notice';
 
 export const addOrChangeAccount = async () => {
     const account = await window.ethereum.enable();
@@ -18,30 +20,63 @@ function AccountPermissionModal({
     return (
         <Container>
 
-            <Content>
-                {message}
-            </Content>
-            <Actions>
-                <Button
-                    variant='contained'
-                    color='primary'
-                    onClick={
-                        async () => {
-                            // await addOrChangeAccount();
-                            onAcceptCallback();
-                        }
+            <Formik
+                initialValues={{
+                    privateKey: '',
+                }}
+                onSubmit={({ privateKey }, { setSubmitting }) => {
+                    setSubmitting(true);
+                    try {
+                        onAcceptCallback(privateKey);
+                    } catch(e) {
+                        showNotice(
+                            'error',
+                            e.message,
+                            5000
+                        );
                     }
-                >
-                    Accept
-                </Button>
-                <Button
-                    variant='contained'
-                    color='secondary'
-                    onClick={() => close()}
-                >
-                    Deny
-                </Button>
-            </Actions>
+                    return;
+                }}
+                render={({
+                    values,
+                    handleChange,
+                    handleSubmit,
+                }) => {
+                    return (
+                        <>
+                            <Content>
+                                <span>
+                                    {message || 'please provide private key'}
+                                </span>  
+                                <TextField
+                                    onChange={handleChange}
+                                    name='privateKey'
+                                    label='Private Key'
+                                    type='password'
+                                    value={values.privateKey}
+                                />
+                            </Content>
+                            <Actions>
+                            <Button
+                                variant='contained'
+                                color='primary'
+                                onClick={handleSubmit}
+                            >
+                                Accept
+                            </Button>
+                            <Button
+                                variant='contained'
+                                color='secondary'
+                                onClick={() => close()}
+                            >
+                                Deny
+                            </Button>
+                    </Actions>
+                        </>
+                    )
+                }}
+            />
+            
         </Container>
     )
 }

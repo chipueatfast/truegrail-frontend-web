@@ -4,7 +4,6 @@ import { observer } from 'mobx-react';
 import { collectionStore } from './stores/index';
 import ItemCard from './ItemCard';
 import { Container } from './styled';
-import trueGrailTokenContract from '~/singletons/trueGrailTokenContract';
 
 @observer
 class Outlet extends React.Component {

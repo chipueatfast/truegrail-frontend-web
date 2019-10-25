@@ -1,4 +1,4 @@
-import { observable, action, toJS } from 'mobx';
+import { observable, action } from 'mobx';
 import request, { API } from '~/utils/request';
 import { showNotice } from '~/utils/notice';
 import userStore from '~/stores/userStore';

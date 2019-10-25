@@ -3,10 +3,9 @@ import trueGrailTokenContract from '~/singletons/trueGrailTokenContract';
 
 import request, { API } from '~/utils/request';
 import panelStore from '~/stores/panelStore';
-import web3Provider from '~/singletons/web3Provider';
-import { getItemFromStorage } from '~/utils/localStorage';
- 
-import ModalPermission from '~/universal-components/ModalPermission';
+import { callSmartContractMethod } from '~/utils/smartContract';
+import ModalPermission from '~/universal-components/ModalPermission/index';
+import { closeModal } from '~/utils/modal';
 
 
 export const showAddFactoryPermissionModal = async (address, brand) => {
@@ -28,20 +27,23 @@ export const showAddFactoryPermissionModal = async (address, brand) => {
         _renderModalContent: () => (
             <ModalPermission
                 message="Are you sure you want to add this address as a factory?"
-                onAcceptCallback={() => addFactory(address, brand)}
+                onAcceptCallback={(privateKey) => {
+                    addFactoryHandler(privateKey, address, brand)
+                }}
             />
         )
     }
     )
 }
 
-export const addFactory = async (address, brand) => {
+export const addFactoryHandler = async (privateKey, address, brand) => {
     try {
-        console.log(trueGrailTokenContract());
+        const method = trueGrailTokenContract().methods.addFactory(address);
+        await callSmartContractMethod({
+            privateKey,
+            method,
+        })
         debugger
-        await trueGrailTokenContract().addFactory(address, {
-            from: getItemFromStorage('user').address,
-        });
         const rs = await request({
             url: API().createFactory(),
             method: 'POST',
@@ -59,7 +61,12 @@ export const addFactory = async (address, brand) => {
             panelStore.closeModal();
         }
     } catch(e) {
-        console.log(e);
+        closeModal();
+        panelStore.showNotice({
+            _message: e.message,
+            _variant: 'error',
+            _duration: 5000,
+        });
     }  
 
     

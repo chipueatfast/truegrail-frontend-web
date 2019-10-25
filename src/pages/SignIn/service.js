@@ -1,6 +1,5 @@
 import React from 'react';
 import trueGrailTokenContract from '~/singletons/trueGrailTokenContract';
-import web3Provider from '~/singletons/web3Provider';
 import request, { API } from '~/utils/request';
 import history from '~/utils/history';
 import userStore from '~/stores/userStore';

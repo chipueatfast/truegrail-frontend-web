@@ -7,10 +7,11 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { Container } from './styled';
 
-import { transferSneaker } from '../service';
+import { showTransferSneakerPermissionModal } from '../service';
+import { closeModal } from '~/utils/modal';
 
 function TransferModal({
-    sneakerId,
+    sneakerInfo,
 }) {
     const initialValues = {
         address: '0xF909B33a5344940DfDA91Fbc9969B1d737EeB784',
@@ -24,7 +25,11 @@ function TransferModal({
                     const valid = WAValidator.validate(values.address, 'ETH');
                     if (valid) {
                         // transfer sneaker;
-                        transferSneaker(sneakerId, values.address);
+                        closeModal();
+                        showTransferSneakerPermissionModal({
+                            sneakerInfo,
+                            toAddress: values.address,
+                        });
                         return;
                     }
                     else {

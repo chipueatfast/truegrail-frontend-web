@@ -8,7 +8,7 @@ import { Formik, Field } from 'formik';
 import { FormLayout } from '~/tg-ui';
 import userStore from '~/stores/userStore';
 import { Container } from './styled';
-import {generateSneakerId, hashUnorderedJSON} from '../service';
+import {generateSneakerId} from '../service';
 import publishSneakerStore from '../stores/publishSneakerStore';
 
 function InfoInput(props) {
