@@ -1,21 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { TextField, Button } from '@material-ui/core';
 import { Formik } from 'formik';
-import { addOrChangeAccount } from './service';
 import { Container } from './styled';
+import { signIn } from './service';
 
 function SignIn() {
+    const [error, setError] = useState('');
+    async function onSubmit(values, {setSubmitting}) {
+        setSubmitting(true);
+        const {
+            err,
+        } = await signIn(values);
+        if (err) {
+            setError(err.message);
+        }
+    }
     return (
         <Container>
             <Formik
                 initialValues={{
-                    blockchainAddress: '',
+                    email: '',
+                    password: '',
                 }}
-                onSubmit={(values, {setSubmitting}) => {
-                    setSubmitting(true);
-                    console.log(values.blockchainAddress.toString());
-                    addOrChangeAccount(values.blockchainAddress.toString());
-                }}
+                onSubmit={onSubmit}
                 render={({
                         values,
                         handleChange,
@@ -23,16 +30,28 @@ function SignIn() {
                     }) => (
                     <>
                         <TextField
-                            name='blockchainAddress'
+                            className='text-field'
+                            name='email'
                             onChange={handleChange}
-                            label='Blockchain Address'
-                            value={values.blockchainAddress}
+                            label='Email'
+                            value={values.email}
                         />
-
+                        <TextField
+                            className='text-field'
+                            name='password'
+                            type='password'
+                            label='Password'
+                            onChange={handleChange}
+                            value={values.password}
+                        />
+                        <span className='text-field bold color-negative'>
+                            {error}
+                        </span> 
                         <Button
                             onClick={handleSubmit}
+                            variant='contained'
                         >
-                            Change account
+                            Sign In
                         </Button>
                     </>
                 )}

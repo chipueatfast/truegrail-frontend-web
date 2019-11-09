@@ -1,40 +1,48 @@
-import React from 'react';
-import trueGrailTokenContract from '~/singletons/trueGrailTokenContract';
-import request, { API } from '~/utils/request';
+import qs from 'querystring';
+import { asyncTryCatchReq } from '~/utils/customAxios'; 
+import { storeItem } from '~/utils/localStorage';
+import API from '~/api';
 import history from '~/utils/history';
-import userStore from '~/stores/userStore';
-import panelStore from '~/stores/panelStore';
-import { AlertModal } from '~/tg-ui';
 
-import { callSmartContractMethod } from '~/utils/smartContract';
-
-export const addOrChangeAccount = async (account) => {
-        userStore.updateUserProperty('address', account);
-        const creatorAddress = await callSmartContractMethod({
-            isPureGet: true,
-            method: trueGrailTokenContract().methods.getCreator(),
-        })
-        console.log(creatorAddress);
-        if (creatorAddress === account) {
-            userStore.updateUserProperty('role', 'creator');
-            history.push('/creator');
-            return;
+export async function signIn({
+    email,
+    password,
+}) { 
+    const [err, rs] = await asyncTryCatchReq({
+        method: 'post',
+        url: API().signIn(),
+        headers : {
+            'Content-Type' : 'application/x-www-form-urlencoded'
+        },
+        data: qs.stringify({
+            grant_type : 'password',
+            username: email,
+            password,
+        }),
+        auth: {
+            username: process.env.REACT_APP_CLIENT_ID,
+            password: process.env.REACT_APP_CLIENT_SECRET,
         }
-
-
-        const factory = await request({
-            url: API().getFactory(account),
-            method: 'GET',
-        });
-
-        if (factory && !factory.err) {
-            userStore.updateUserProperty('role', 'factory');
-            history.push('/factory');
-            return;
+    });
+    if (rs && rs.data) {
+        const {
+            user,
+            accessToken,
+            refreshToken,
+        } = rs.data;
+        const {
+            role,
+        } = user;
+        storeItem('user', JSON.stringify(user));
+        storeItem('accessToken', accessToken);
+        storeItem('refreshToken', refreshToken);
+        if (role === 'creator') {
+            await history.push('/creator');
+            return {err, rs};
         }
-        
-        panelStore.showModal({
-            _modalTitle: 'Alert',
-            _renderModalContent: () => <AlertModal announcement='Indentity not found' />
-        })
+    }
+    return {
+        err,
+    };
 }
+

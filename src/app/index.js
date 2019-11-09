@@ -4,6 +4,7 @@ import { Router } from 'react-router-dom';
 import RouterGuard from 'react-router-guard';
 import history from '~/utils/history';
 import headerConfig from '~/routes/header';
+import GlobalStyle from '~/styles/GlobalStyle';
 import routerConfig from '../routes/config';
 import { UniversalNotice, UniversalModal }from '~/universal-components';
 
@@ -17,6 +18,8 @@ const Container = styled.div`
 function App() {
   return (
     <Container>
+      <GlobalStyle />
+      <div className='a'></div>
       <Router history={history}>
         <RouterGuard config={headerConfig} />
       </Router>
