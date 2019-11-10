@@ -6,6 +6,7 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import {Container} from './styled';
+import {addFactoryFromCreator} from './service';
 // import { showAddFactoryPermissionModal } from './service';
 
 function Creator() {
@@ -40,7 +41,10 @@ function Creator() {
                 onSubmit={(values, {setSubmitting}) => {
                     setSubmitting(true);
                     console.log(values);
-                    
+                    const {
+                        err, rs,
+                    } = addFactoryFromCreator(values);
+
                     
                 }}
             >
