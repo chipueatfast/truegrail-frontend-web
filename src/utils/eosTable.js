@@ -3,7 +3,6 @@ import SHA256 from 'crypto-js/sha256';
 
 const rpc = new JsonRpc(process.env.REACT_APP_NODEOS_URL);
 
-console.log(process.env.REACT_APP_NODEOS_URL);
 export async function getRecordFromTableByKey({
     table,
     id,

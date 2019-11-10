@@ -1,13 +1,23 @@
 import React, { useState } from 'react';
+import * as Yup from 'yup';
 import FormControl from '@material-ui/core/FormControl';
 import { Formik } from 'formik';
 import { TextField, Button } from '@material-ui/core';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
+import { CustomizedErrorMessage } from '~/tg-ui/FormComponent';
 import {Container} from './styled';
 import {addFactoryFromCreator} from './service';
-// import { showAddFactoryPermissionModal } from './service';
+import { showNoticeComponent } from '~/utils/notice';
+
+const validationSchema = Yup.object().shape({
+    email: Yup.string().email('Invalid email').required('This field is mandatory'),
+    username: Yup.string().required('This field is mandatory'),
+    address: Yup.string().required('This field is mandatory'),
+    brand: Yup.string().required('This field is mandatory'),
+});
+
 
 function Creator() {
     const brandList = [
@@ -31,21 +41,33 @@ function Creator() {
         <Container>
             <span>Creator</span>
             <Formik
+                validationSchema={validationSchema}
                 initialValues={{
-                    email: 'vans_offthewall@gmail.com',
-                    username: 'Factory No 1',
-                    address: 'Hẻm 141, An Bình, Thành phố Biên Hòa, Đồng Nai',
+                    email: '',
+                    username: '',
+                    address: '',
                     brand: '',
-
                 }}
-                onSubmit={(values, {setSubmitting}) => {
+                onSubmit={async (values, {setSubmitting, resetForm}) => {
                     setSubmitting(true);
                     console.log(values);
                     const {
-                        err, rs,
-                    } = addFactoryFromCreator(values);
-
-                    
+                        err,
+                    } = await addFactoryFromCreator(values);
+                    console.log(err);
+                    if (!err) {
+                        showNoticeComponent({
+                            variant: 'success',
+                            message: 'Added factory',
+                        });
+                        resetForm();
+                    } else {
+                        showNoticeComponent({
+                            variant: 'error',
+                            message: err.message,
+                        });
+                    }
+                    setSubmitting(false);
                 }}
             >
                 {
@@ -53,7 +75,9 @@ function Creator() {
                         values,
                         setValues,
                         handleChange,
+                        isSubmitting,
                         handleSubmit,
+                        isValid,
                     }) => (
                         <>
                             <TextField
@@ -61,7 +85,10 @@ function Creator() {
                                 value={values.email}
                                 name='email'
                                 onChange={handleChange}
-                                label='Factoy Email'
+                                label='Factory Email'
+                            />
+                            <CustomizedErrorMessage
+                                name='email'
                             />
                             <TextField
                                 className='text-field'
@@ -70,12 +97,18 @@ function Creator() {
                                 onChange={handleChange}
                                 label='Factory Name'
                             />
+                            <CustomizedErrorMessage
+                                name='username'
+                            />
                             <TextField
                                 className='text-field'
                                 value={values.address}
                                 name='address'
                                 onChange={handleChange}
                                 label='Factory Address'
+                            />
+                            <CustomizedErrorMessage
+                                name='address'
                             />
                             <FormControl
                                 className='select text-field'
@@ -108,7 +141,11 @@ function Creator() {
                                     }
                                 </Select>
                             </FormControl>
+                            <CustomizedErrorMessage
+                                name='brand'
+                            />
                             <Button
+                                disabled={isSubmitting || !isValid}
                                 variant='contained'
                                 onClick={handleSubmit}
                             >

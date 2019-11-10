@@ -8,10 +8,14 @@ export const showNotice = (_variant, _message, _duration = 5000) => {
     })
 }
 
-export function showNotice2(_variant, _message, _duration = 5000) {
+export function showNoticeComponent({
+    variant,
+    message,
+    duration = 5000,
+}) {
     panelStore.showNotice({
-        _variant,
-        _message,
-        _duration,
+        _variant: variant,
+        _message: message,
+        _duration: duration,
     })
 }

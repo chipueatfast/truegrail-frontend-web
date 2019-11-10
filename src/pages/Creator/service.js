@@ -28,10 +28,9 @@ export async function addFactoryFromCreator(factory) {
             table: 'users',
             id,
         }))[0];
-        if (resultFromBlockchain.info_hash === expectedUserHash) {
-            console.log('added factory!!');
+        if (resultFromBlockchain.info_hash !== expectedUserHash) {
             return {
-                err: 'Blockchain mismatch!',
+                err: 'Blockchain mismatch',
             };
         }
     }

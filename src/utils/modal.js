@@ -4,6 +4,15 @@ import { AlertModal } from 'tg-ui';
 
 import LinearProgress from '@material-ui/core/LinearProgress';
 
+export function showModalComponent({
+    modalTitle,
+    renderModalContent,
+}) {
+    panelStore.showModal({
+        _modalTitle: modalTitle,
+        _renderModalContent: renderModalContent,
+    })
+}
 
 export const showModal = (
     _modalTitle,
