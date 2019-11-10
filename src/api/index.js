@@ -23,8 +23,9 @@ export default () => {
         contract: (contractName) => '/contract/',
         getFactory: (address) => `/factory/${address}`,
         // POST
-        addFactory: () => `/factory/`,
-        createFactory: () => '/factory',
+        addFactory: () => '/factory/',
+        // GET
+        getAllFactories: () => '/factory/',
         getSneakerInfoAndHash: (id) => `/sneaker/${id}`,
         sneaker: () => '/sneaker',
         sneakerCollection: (address) => `/user/ownership/${address}`,

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import * as Yup from 'yup';
 import FormControl from '@material-ui/core/FormControl';
 import { Formik } from 'formik';
@@ -6,10 +6,15 @@ import { TextField, Button } from '@material-ui/core';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
+
 import { CustomizedErrorMessage } from '~/tg-ui/FormComponent';
-import {Container} from './styled';
-import {addFactoryFromCreator} from './service';
 import { showNoticeComponent } from '~/utils/notice';
+import FactoryTable from './FactoryTable/index';
+
+import {Container} from './styled';
+import {addFactoryFromCreator, populateVerifiedFactoryTable} from './service';
+
+
 
 const validationSchema = Yup.object().shape({
     email: Yup.string().email('Invalid email').required('This field is mandatory'),
@@ -20,6 +25,8 @@ const validationSchema = Yup.object().shape({
 
 
 function Creator() {
+    const [openSelect, setOpenSelect] = useState(false);
+    const [factories, setFactories] = useState([]);
     const brandList = [
         {
             label: 'Vans',
@@ -34,11 +41,18 @@ function Creator() {
             value: 'adidas',
         },
     ]
-
-    const [openSelect, setOpenSelect] = useState(false);
     
+    useEffect(() => {
+        populateVerifiedFactoryTable().then(
+            verifiedFactories => setFactories(verifiedFactories)
+        );
+    }, [])
+
     return (
         <Container>
+            <FactoryTable
+                factories={factories}
+            />
             <span>Creator</span>
             <Formik
                 validationSchema={validationSchema}
@@ -50,7 +64,6 @@ function Creator() {
                 }}
                 onSubmit={async (values, {setSubmitting, resetForm}) => {
                     setSubmitting(true);
-                    console.log(values);
                     const {
                         err,
                     } = await addFactoryFromCreator(values);

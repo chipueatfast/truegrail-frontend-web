@@ -3,11 +3,22 @@ import API from '~/api';
 import { composeAccessTokenHeader } from '~/utils/authorization';
 import { createCorrespondingUserHash, getRecordFromTableByKey } from '~/utils/eosTable';
 
-export async function addFactoryFromCreator(factory) {
+export async function checkFactoryInfoConsistency(factory) {
+    const {
+        id,
+    } = factory;
+    const resultFromBlockchain = (await getRecordFromTableByKey({
+        table: 'users',
+        id,
+    }))[0];
     const expectedUserHash = createCorrespondingUserHash({
         ...factory,
         role: 'factory',
-    })
+    });
+    return resultFromBlockchain === expectedUserHash;
+}
+
+export async function addFactoryFromCreator(factory) {
     const [err, rs] = await asyncTryCatchReq({
         method: 'post',
         url: API().addFactory(),
@@ -24,11 +35,10 @@ export async function addFactoryFromCreator(factory) {
                 id,
             }
         } = rs;
-        const resultFromBlockchain = (await getRecordFromTableByKey({
-            table: 'users',
+        if (!checkFactoryInfoConsistency({
+            ...factory,
             id,
-        }))[0];
-        if (resultFromBlockchain.info_hash !== expectedUserHash) {
+        })) {
             return {
                 err: 'Blockchain mismatch',
             };
@@ -38,4 +48,24 @@ export async function addFactoryFromCreator(factory) {
         err,
         rs,
     };
+}
+
+export async function populateVerifiedFactoryTable() {
+    const [err, rs] = await asyncTryCatchReq({
+        url: API().getAllFactories(),
+        method: 'get', 
+    });
+    const verifiedFactory = [];
+    if (rs) {
+        rs.data.forEach(factory => {
+            if (checkFactoryInfoConsistency(factory)) {
+                verifiedFactory.push(factory);
+            }
+        });
+    } else {
+        return {
+            err,
+        };
+    }
+    return verifiedFactory;
 }
