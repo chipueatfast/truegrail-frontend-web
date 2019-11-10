@@ -15,7 +15,7 @@ export async function checkFactoryInfoConsistency(factory) {
         ...factory,
         role: 'factory',
     });
-    return resultFromBlockchain === expectedUserHash;
+    return resultFromBlockchain.info_hash === expectedUserHash;
 }
 
 export async function addFactoryFromCreator(factory) {
@@ -35,14 +35,17 @@ export async function addFactoryFromCreator(factory) {
                 id,
             }
         } = rs;
-        if (!checkFactoryInfoConsistency({
+        if (!await checkFactoryInfoConsistency({
             ...factory,
             id,
         })) {
             return {
-                err: 'Blockchain mismatch',
+                err: {
+                    message: 'Blockchain mismatch',
+                },
             };
         }
+
     }
     return {
         err,
@@ -57,11 +60,12 @@ export async function populateVerifiedFactoryTable() {
     });
     const verifiedFactory = [];
     if (rs) {
-        rs.data.forEach(factory => {
-            if (checkFactoryInfoConsistency(factory)) {
-                verifiedFactory.push(factory);
+        const factories = rs.data;
+        for (let i = 0; i < rs.data.length; i++) {
+            if (await checkFactoryInfoConsistency(factories[i])) {
+                verifiedFactory.push(factories[i]);
             }
-        });
+        }
     } else {
         return {
             err,

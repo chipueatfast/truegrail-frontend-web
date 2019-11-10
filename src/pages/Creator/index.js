@@ -67,7 +67,6 @@ function Creator() {
                     const {
                         err,
                     } = await addFactoryFromCreator(values);
-                    console.log(err);
                     if (!err) {
                         showNoticeComponent({
                             variant: 'success',
