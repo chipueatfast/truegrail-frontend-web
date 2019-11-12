@@ -1,4 +1,4 @@
-import userStore from '~/stores/userStore';
+import { getItemFromStorage } from '~/utils/localStorage';
 
 const correspondingUrl = {
     'factory': '/factory',
@@ -7,11 +7,16 @@ const correspondingUrl = {
 
 export default function validRole(role) {
     return new Promise((resolve, reject) => {
-        if (userStore.role === role) {
-            resolve(true);
-        } else {
-            reject(new Error(correspondingUrl[userStore.role] || '/'));
-        }
-        
+        const user = getItemFromStorage('user');
+        if (user) {
+            const {
+                role: registeredRole,
+            } = user;
+            if (registeredRole === role) {
+                resolve(true);
+            } else {
+                reject(new Error(correspondingUrl[registeredRole] || '/'));
+            }
+        }         
     })
 }

@@ -14,7 +14,6 @@ import { Typography } from '@material-ui/core';
 class Header extends React.Component {
     
     render() {
-        console.log(panelStore.currentPage.get());
         return (
             <Container>
                  <img src={vansLogo}

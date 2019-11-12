@@ -16,7 +16,7 @@ export async function signIn({
         },
         data: qs.stringify({
             grant_type : 'password',
-            username: email,
+            username: email.trim(),
             password,
         }),
         auth: {
@@ -36,8 +36,10 @@ export async function signIn({
         storeItem('user', JSON.stringify(user));
         storeItem('accessToken', accessToken);
         storeItem('refreshToken', refreshToken);
-        if (role === 'creator') {
-            await history.push('/creator');
+        if (role) {
+            console.log('it go here');
+            console.log(role);
+            await history.push(`/${role}`);         
             return {err, rs};
         }
     }
