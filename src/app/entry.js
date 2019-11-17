@@ -4,6 +4,7 @@ import App from './index';
 import './App.css';
 
 async function start() {
+    // await initWeb3Provider();
     ReactDOM.render(<App />, document.getElementById('root'));
 }
 
