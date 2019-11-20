@@ -1,18 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import * as Yup from 'yup';
+import { makeStyles } from '@material-ui/core/styles';
 import FormControl from '@material-ui/core/FormControl';
 import { Formik } from 'formik';
 import { TextField, Button } from '@material-ui/core';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
+import Grid from '@material-ui/core/Grid';
 
 import { CustomizedErrorMessage } from '~/tg-ui/FormComponent';
 import { showNoticeComponent } from '~/utils/notice';
 import FactoryTable from './FactoryTable/index';
 
 import {Container} from './styled';
-import {addFactoryFromCreator, populateVerifiedFactoryTable} from './service';
+import {
+    addNewFactoryToSystem,
+    populateVerifiedFactoryTable,
+} from './service';
+import { showModalComponent, closeModal } from '~/utils/modal';
+import RequiringPasswordModal from '~/universal-components/RequiringPasswordModal/index';
 
 
 
@@ -23,6 +30,19 @@ const validationSchema = Yup.object().shape({
     brand: Yup.string().required('This field is mandatory'),
 });
 
+
+const useStyles = makeStyles(theme => ({
+    grid: {
+      flexGrow: 1,
+      maxWidth: 500,
+      position: 'relative',
+    },
+    paper: {
+      padding: theme.spacing(2),
+      textAlign: 'center',
+      color: theme.palette.text.secondary,
+    },
+  }));
 
 function Creator() {
     const [openSelect, setOpenSelect] = useState(false);
@@ -41,19 +61,59 @@ function Creator() {
             value: 'adidas',
         },
     ]
+
+    const classes = useStyles();
     
     useEffect(() => {
         populateVerifiedFactoryTable().then(
             verifiedFactories => setFactories(verifiedFactories)
         );
     }, [])
+    function submitFactoryForm(values, {setSubmitting}) {
+        setSubmitting(true);
+        showModalComponent({
+            modalTitle: 'Add new factory',
+            renderModalContent: () => (
+                <RequiringPasswordModal
+                    protectedCallback={async password => {
+                        const {
+                            error,
+                            newFactory,
+                        } = await addNewFactoryToSystem({
+                            formValues: values,
+                            password,
+                        });
+                        setSubmitting(false);
+                        if (error) {
+                            showNoticeComponent({
+                                variant: 'error',
+                                message: error.message,
+                            });
+                            return;
+                        };
+                        closeModal();
+                        showNoticeComponent({
+                            variant: 'success',
+                            message: 'A new factory has been recorded to TrueGrail',
+                        });
+                        setFactories([...factories, newFactory]);
+                    }}
+                />
+            )
+        })
+    }
 
     return (
         <Container>
-            <FactoryTable
-                factories={factories}
-            />
-            <span>Creator</span>
+            {
+                factories.length !== 0 &&
+                (
+                    <FactoryTable
+                        factories={factories}
+                    />
+                )
+            }
+            <h1>Creator</h1>
             <Formik
                 validationSchema={validationSchema}
                 initialValues={{
@@ -62,25 +122,7 @@ function Creator() {
                     address: '',
                     brand: '',
                 }}
-                onSubmit={async (values, {setSubmitting, resetForm}) => {
-                    setSubmitting(true);
-                    const {
-                        err,
-                    } = await addFactoryFromCreator(values);
-                    if (!err) {
-                        showNoticeComponent({
-                            variant: 'success',
-                            message: 'Added factory',
-                        });
-                        resetForm();
-                    } else {
-                        showNoticeComponent({
-                            variant: 'error',
-                            message: err.message,
-                        });
-                    }
-                    setSubmitting(false);
-                }}
+                onSubmit={submitFactoryForm}
             >
                 {
                     ({
@@ -91,79 +133,90 @@ function Creator() {
                         handleSubmit,
                         isValid,
                     }) => (
-                        <>
-                            <TextField
-                                className='text-field'
-                                value={values.email}
-                                name='email'
-                                onChange={handleChange}
-                                label='Factory Email'
-                            />
-                            <CustomizedErrorMessage
-                                name='email'
-                            />
-                            <TextField
-                                className='text-field'
-                                value={values.username}
-                                name='username'
-                                onChange={handleChange}
-                                label='Factory Name'
-                            />
-                            <CustomizedErrorMessage
-                                name='username'
-                            />
-                            <TextField
-                                className='text-field'
-                                value={values.address}
-                                name='address'
-                                onChange={handleChange}
-                                label='Factory Address'
-                            />
-                            <CustomizedErrorMessage
-                                name='address'
-                            />
-                            <FormControl
-                                className='select text-field'
-                            >
-                                <InputLabel id="brand-label">Brand</InputLabel>
-                                <Select
-                                    id='select-component'
-                                    onClose={() => setOpenSelect(false)}
-                                    onOpen={() => setOpenSelect(true)}
-                                    onChange={(e) => {
-                                        setValues({
-                                            ...values,
-                                            brand: e.target.value,
-                                        });
-                                    }}
-                                    open={openSelect}
-                                    value={values.brand}
+                        <Grid className={classes.grid} container spacing={3}>
+                            <Grid item xs={12}>
+                                <TextField
+                                    className='text-field'
+                                    value={values.email}
+                                    name='email'
+                                    onChange={handleChange}
+                                    label='Factory Email'
+                                />
+                                <CustomizedErrorMessage
+                                    name='email'
+                                />
+                            </Grid>
+                            <Grid item xs={6}>
+                                <TextField
+                                    className='text-field'
+                                    value={values.username}
+                                    name='username'
+                                    onChange={handleChange}
+                                    label='Factory Name'
+                                />
+                                <CustomizedErrorMessage
+                                    name='username'
+                                />
+                            </Grid>
+                            <Grid item xs={6}>
+                                <FormControl
+                                    className='select text-field'
                                 >
-                                    {
-                                        brandList.map(brand => {
-                                            return (
-                                                <MenuItem
-                                                    key={brand.value}
-                                                    value={brand.value}
-                                                >
-                                                    {brand.label}
-                                                </MenuItem>
-                                            )
-                                        })
-                                    }
-                                </Select>
-                            </FormControl>
-                            <CustomizedErrorMessage
-                                name='brand'
-                            />
-                            <Button
-                                disabled={isSubmitting || !isValid}
-                                variant='contained'
-                                onClick={handleSubmit}
-                            >
-                                Add Factory
-                            </Button>
-                        </>
+                                    <InputLabel id="brand-label">Brand</InputLabel>
+                                    <Select
+                                        id='select-component'
+                                        onClose={() => setOpenSelect(false)}
+                                        onOpen={() => setOpenSelect(true)}
+                                        onChange={(e) => {
+                                            setValues({
+                                                ...values,
+                                                brand: e.target.value,
+                                            });
+                                        }}
+                                        open={openSelect}
+                                        value={values.brand}
+                                    >
+                                        {
+                                            brandList.map(brand => {
+                                                return (
+                                                    <MenuItem
+                                                        key={brand.value}
+                                                        value={brand.value}
+                                                    >
+                                                        {brand.label}
+                                                    </MenuItem>
+                                                )
+                                            })
+                                        }
+                                    </Select>
+                                </FormControl>
+                                <CustomizedErrorMessage
+                                    name='brand'
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    className='text-field'
+                                    value={values.address}
+                                    name='address'
+                                    onChange={handleChange}
+                                    label='Factory Address'
+                                />
+                                <CustomizedErrorMessage
+                                    name='address'
+                                />
+                            </Grid>
+                            <div className='action'>
+                                <Button
+                                    // disabled={isSubmitting || !isValid}
+                                    variant='contained'
+                                    onClick={handleSubmit}
+                                >
+                                    Add Factory
+                                </Button>
+                            </div>                          
+                        
+                        </Grid>
                     )
                 }
             </Formik>

@@ -6,7 +6,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
-import { useStyles } from './styled';
+import { useStyles, ConditionalTableCell } from './styled';
 
 function FactoryTable({
     factories,
@@ -26,14 +26,21 @@ function FactoryTable({
             </TableRow>
           </TableHead>
           <TableBody>
-            {factories.map(row => (
-              <TableRow key={row.username}>
-                <TableCell>{row.username}</TableCell>
-                <TableCell>{row.email}</TableCell>
-                <TableCell>{row.address}</TableCell>
-                <TableCell>{row.brand}</TableCell>
-              </TableRow>
-            ))}
+            {factories.map(row => {
+              // ConditionalTableCell problem
+              const isBlockchainMatchedToNumber = row.isBlockchainMatched ? 1 : 0;
+              return (
+                <TableRow
+                  className={row.isBlockchainMatched ? '' : 'bg-negative'}
+                  key={row.username}
+                >
+                  <ConditionalTableCell iscontrast={isBlockchainMatchedToNumber}>{row.username}</ConditionalTableCell>
+                  <ConditionalTableCell iscontrast={isBlockchainMatchedToNumber}>{row.email}</ConditionalTableCell>
+                  <ConditionalTableCell iscontrast={isBlockchainMatchedToNumber}>{row.address}</ConditionalTableCell>
+                  <ConditionalTableCell iscontrast={isBlockchainMatchedToNumber}>{row.brand}</ConditionalTableCell>
+                </TableRow>
+              )
+            })}
           </TableBody>
         </Table>
       </Paper>

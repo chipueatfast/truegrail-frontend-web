@@ -4,8 +4,6 @@ import { Formik } from 'formik';
 import { Container } from './styled';
 import { signIn } from './service';
 
-import { generateKeyPair } from '~/utils/eosio';
-
 function SignIn() {
     const [error, setError] = useState('');
     async function onSubmit(values, {setSubmitting}) {
@@ -19,11 +17,6 @@ function SignIn() {
     }
     return (
         <Container>
-            <button
-                onClick={generateKeyPair}
-            >
-                Test Keys
-            </button>
             <Formik
                 initialValues={{
                     email: '',

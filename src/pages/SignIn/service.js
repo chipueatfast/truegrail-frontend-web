@@ -37,8 +37,6 @@ export async function signIn({
         storeItem('accessToken', accessToken);
         storeItem('refreshToken', refreshToken);
         if (role) {
-            console.log('it go here');
-            console.log(role);
             await history.push(`/${role}`);         
             return {err, rs};
         }
