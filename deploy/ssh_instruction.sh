@@ -6,7 +6,4 @@ eval "$(ssh-agent -s)" >> ./deployment_log 2>&1 # start ssh-agent cache
 ssh-add ~/.ssh/truegrail_frontend_deploy_key >> ./deployment_log 2>&1
 git pull --ff >> ./deployment_log 2>&1
 sudo kill $(lsof -t -i:3000) >> ./deployment_log 2>&1
-yarn >> ./deployment_log 2>&1
-yarn build >> ./deployment_log 2>&1 &
-serve -s build -l 3000 >> ./deployment_log 2>&1 &
 exit
