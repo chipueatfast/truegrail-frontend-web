@@ -1,6 +1,6 @@
 import { dynamicWrapper } from 'react-router-guard';
 
-import { validRole } from './guards';
+import { validRole, isNotIndentified } from './guards';
 
 
 export default [
@@ -24,7 +24,7 @@ export default [
         component: dynamicWrapper(() => import('../pages/Creator')),
     },
     {
-
+        canActivate: [isNotIndentified],
         path: '/signin',
         component: dynamicWrapper(() => import('../pages/SignIn')),
     },
