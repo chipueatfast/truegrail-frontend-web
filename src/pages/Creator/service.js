@@ -7,6 +7,7 @@ import {
     generateKeyPair,
     encryptPrivateKey,
     executeSmartContractMethod,
+    generateRandomEosAccountName,
 } from '~/utils/eosio';
 import { simulateLongFetch } from '~/utils/async';
 
@@ -101,6 +102,7 @@ async function composeFactoryRegistrationInfo(values) {
         privateKey,
     } = await generateKeyPair();
     const defaultPassword = '1';
+    const eosName = generateRandomEosAccountName();
     const encryptedPrivateKey = encryptPrivateKey(privateKey, defaultPassword);
     const role = 'factory';
     
@@ -110,6 +112,7 @@ async function composeFactoryRegistrationInfo(values) {
         encryptedPrivateKey,
         role,
         password: defaultPassword,
+        eosName,
     };
 }
 
@@ -132,14 +135,17 @@ async function addFactoryToDatabase(factory) {
         const {
             data: {
                 id,
-                eosName,
             }
         } = rs;
+        const {
+            eosName,
+            publicKey,
+        } = factoryFullDetail;
 
         return {
             id,
             eosName,
-            publicKey: factoryFullDetail.publicKey,
+            publicKey,
         };
     }
 }
