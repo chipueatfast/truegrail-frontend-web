@@ -8,6 +8,7 @@ import {
     encryptPrivateKey,
     executeSmartContractMethod,
 } from '~/utils/eosio';
+import { simulateLongFetch } from '~/utils/async';
 
 export async function addNewFactoryToSystem({
     formValues,
@@ -151,6 +152,7 @@ async function checkFactoryInfoConsistency(factory) {
         table: 'users',
         id,
     }))[0];
+    await simulateLongFetch(1000);
     const expectedUserHash = createCorrespondingUserHash({
         ...factory,
         role: 'factory',

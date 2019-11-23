@@ -1,28 +1,32 @@
 import React from 'react';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
-import { useStyles, ConditionalTableCell } from './styled';
+import { useStyles, ConditionalTableCell, InverseTableCell, Container } from './styled';
 
 function FactoryTable({
     factories,
 }) {
     const classes = useStyles();
 
+    if (factories.length === 0) {
+      return null;
+    }
+
     return (
-    <div className={classes.root}>
+    <Container className={classes.root}>
+      <h2>Created Issuers </h2>
       <Paper className={classes.paper}>
         <Table className={classes.table} size="small" aria-label="a dense table">
           <TableHead>
             <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell>Email</TableCell>
-              <TableCell>Address</TableCell>
-              <TableCell>Brand</TableCell>
+              <InverseTableCell>Name</InverseTableCell>
+              <InverseTableCell>Email</InverseTableCell>
+              <InverseTableCell>Address</InverseTableCell>
+              <InverseTableCell>Brand</InverseTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -44,7 +48,7 @@ function FactoryTable({
           </TableBody>
         </Table>
       </Paper>
-    </div>
+    </Container>
     );
 }
 

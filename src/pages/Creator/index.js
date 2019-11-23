@@ -11,6 +11,7 @@ import Grid from '@material-ui/core/Grid';
 
 import { CustomizedErrorMessage } from '~/tg-ui/FormComponent';
 import { showNoticeComponent } from '~/utils/notice';
+
 import FactoryTable from './FactoryTable/index';
 
 import {Container} from './styled';
@@ -20,6 +21,7 @@ import {
 } from './service';
 import { showModalComponent, closeModal } from '~/utils/modal';
 import RequiringPasswordModal from '~/universal-components/RequiringPasswordModal/index';
+import LoadingIndicator from '~/universal-components/LoadingIndicator/index';
 
 
 
@@ -47,6 +49,7 @@ const useStyles = makeStyles(theme => ({
 function Creator() {
     const [openSelect, setOpenSelect] = useState(false);
     const [factories, setFactories] = useState([]);
+    const [fetchedTable, setFetchedTable] = useState(false);
     const brandList = [
         {
             label: 'Vans',
@@ -65,9 +68,11 @@ function Creator() {
     const classes = useStyles();
     
     useEffect(() => {
+        setFetchedTable(false);
         populateVerifiedFactoryTable().then(
             verifiedFactories => {
                 setFactories(verifiedFactories);
+                setFetchedTable(true);
             }
         );
     }, [])
@@ -77,7 +82,7 @@ function Creator() {
             modalTitle: 'Add new factory',
             renderModalContent: () => (
                 <RequiringPasswordModal
-                    protectedCallback={async password => {
+                    protectedCallback={async (password, setIsInAction) => {
                         const {
                             error,
                             newFactory,
@@ -85,11 +90,12 @@ function Creator() {
                             formValues: values,
                             password,
                         });
+                        setIsInAction(false);
                         setSubmitting(false);
                         if (error) {
                             showNoticeComponent({
                                 variant: 'error',
-                                message: error.message,
+                                message: error.message || 'Incorrect password',
                             });
                             return;
                         };
@@ -107,14 +113,6 @@ function Creator() {
 
     return (
         <Container>
-            {
-                factories.length !== 0 &&
-                (
-                    <FactoryTable
-                        factories={factories}
-                    />
-                )
-            }
             <h1>Creator</h1>
             <Formik
                 validationSchema={validationSchema}
@@ -222,6 +220,15 @@ function Creator() {
                     )
                 }
             </Formik>
+            {
+                fetchedTable ?
+                (
+                    <FactoryTable
+                        factories={factories}
+                    />
+                ) :
+                <LoadingIndicator />
+            }
         </Container>
     )
 }

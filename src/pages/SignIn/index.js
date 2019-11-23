@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import AuthenticationMiniature from '~/assets/img/authentication.png';
 import { TextField, Button } from '@material-ui/core';
 import { Formik } from 'formik';
-import { Container } from './styled';
+import { Container, Miniature } from './styled';
 import { signIn } from './service';
+
 
 function SignIn() {
     const [error, setError] = useState('');
@@ -17,6 +19,10 @@ function SignIn() {
     }
     return (
         <Container>
+            <Miniature
+                src={AuthenticationMiniature}
+                alt='miniature'
+            />
             <Formik
                 initialValues={{
                     email: '',

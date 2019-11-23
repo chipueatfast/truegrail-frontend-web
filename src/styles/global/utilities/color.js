@@ -35,7 +35,7 @@ export default createGlobalStyle`
     }
 
     .color-white {
-        color: white;
+        color: white !important;
     }
     .bg-white {
         background: white;

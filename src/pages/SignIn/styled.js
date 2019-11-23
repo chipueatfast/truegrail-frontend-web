@@ -18,5 +18,10 @@ export const Container = styled.div`
         margin-top: 24px;
         width: 50%;
     }
-    
+`
+
+export const Miniature = styled.img`
+    width: 200px;
+    object-fit: contain;
+    margin-bottom: 12px;
 `

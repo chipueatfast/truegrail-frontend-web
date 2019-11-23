@@ -4,7 +4,7 @@ import history from '~/utils/history';
 
 import userStore from '~/stores/userStore';
 import panelStore from '~/stores/panelStore';
-import vansLogo from '~/assets/img/vans_logo.jpg';
+import headerLogo from '~/assets/img/truegrail_header_logo.png';
 
 import { observer } from 'mobx-react';
 import { Container } from './styled';
@@ -16,11 +16,15 @@ class Header extends React.Component {
     render() {
         return (
             <Container>
-                 <img src={vansLogo}
+                 <img 
+                    src={headerLogo}
                     onClick={() => history.push('/')}
                     style={{
-                    height: 50,
-                    width: 50,
+                        width: 256,
+                        objectFit: 'contain',
+                        padding: 12,
+                        marginLeft: 48,
+
                     }} 
                     alt='logo'
                 />
@@ -28,7 +32,7 @@ class Header extends React.Component {
                     {panelStore.currentPage.get()}
                 </Typography>
                 <Button
-                    color='secondary'
+                    className='signout-btn'
                     variant='contained'
                     onClick={userStore.logOut}
                 >

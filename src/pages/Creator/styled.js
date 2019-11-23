@@ -6,7 +6,6 @@ export const Container = styled.div`
     justify-content: space-between;
     align-items: center;
     flex-direction: column;
-    height: 200px;
     flex-grow: 1;
 
     .text-field {
