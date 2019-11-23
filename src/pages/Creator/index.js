@@ -66,7 +66,9 @@ function Creator() {
     
     useEffect(() => {
         populateVerifiedFactoryTable().then(
-            verifiedFactories => setFactories(verifiedFactories)
+            verifiedFactories => {
+                setFactories(verifiedFactories);
+            }
         );
     }, [])
     function submitFactoryForm(values, {setSubmitting}) {

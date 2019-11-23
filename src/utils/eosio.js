@@ -3,8 +3,17 @@ import { JsonRpc, Api, RpcError } from 'eosjs';
 import { JsSignatureProvider } from 'eosjs/dist/eosjs-jssig';
 import CryptoJS from 'crypto-js';
 import { getItemFromStorage } from './localStorage';
+import { isProduction } from '~/utils/environment';
 
-const rpc = new JsonRpc(process.env.REACT_APP_NODEOS_URL);
+const EOS_SPEC = isProduction() ? {
+    server: 'http://jungle2.cryptolions.io:80',
+    smartContract: 'truegrail123',
+} : {
+    server: 'http://localhost:8888',
+    smartContract: 'truegrail2',
+};
+
+const rpc = new JsonRpc(EOS_SPEC.server);
 
 export function encryptPrivateKey(privateKey, password) {
     return CryptoJS.AES.encrypt(privateKey, password).toString();
@@ -39,8 +48,8 @@ export async function getRecordFromTableByKey({
 }) {
     const rs = await rpc.get_table_rows({
         json: true,
-        code: 'truegrail2',
-        scope: 'truegrail2',
+        code: EOS_SPEC.smartContract,
+        scope: EOS_SPEC.smartContract,
         table,
         lower_bound: id, 
         upper_bound: id+1,
