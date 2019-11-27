@@ -15,6 +15,17 @@ const EOS_SPEC = isProduction() ? {
 
 const rpc = new JsonRpc(EOS_SPEC.server);
 
+export function generateRandomEosAccountName() {
+    let result = '';
+    const length = 12;
+    const characters = '12345abcdefghijklmnopqrstuvwxyz';
+    for (let i=0; i<length; i++) {
+        const randomIndex = Math.floor(Math.random() * length);
+        result += characters.charAt(randomIndex);
+    }
+    return result;
+}
+
 export function encryptPrivateKey(privateKey, password) {
     return CryptoJS.AES.encrypt(privateKey, password).toString();
 }
