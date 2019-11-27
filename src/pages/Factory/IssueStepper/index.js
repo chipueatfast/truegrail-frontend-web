@@ -2,9 +2,8 @@ import React from 'react';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
 
+import GrailStamp from '../GrailStamp';
 import InfoInput from '../InfoInput';
 import { useStyles, StepContainer } from './styled';
 
@@ -42,7 +41,7 @@ function IssueStepper() {
 
     function renderPrintList() {
       return (
-        <div>List to print</div>
+        <GrailStamp />
       );
     }
 

@@ -5,6 +5,8 @@ export const StampContainer = styled.div`
     padding: 12px;
     display: flex;
     flex-direction: column;
+    border: solid 1px;
+    border-radius: 4px;
 `
 
 export const MainContainer = styled.div`
@@ -19,16 +21,21 @@ export const QRContainer = styled.div`
 `
 
 export const PrivateContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin: 12px;
 `
 
 export const ActionContainer = styled.div`
     display: flex;
     flex-direction: column;
+    justify-content: flex-end;
 `
 
 export const ActionItem  = styled.div`
     display: flex;
     flex-direction: row;
+    align-items: center;
 `
 
 export const useStyles = makeStyles(theme => ({
