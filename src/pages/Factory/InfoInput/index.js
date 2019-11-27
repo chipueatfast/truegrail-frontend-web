@@ -5,13 +5,15 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
 import LoyaltyIcon from '@material-ui/icons/Loyalty'
 import { Formik, Field } from 'formik';
-import { FormLayout } from '~/tg-ui';
+import { FormLayout } from '~/tg-ui/index';
 import userStore from '~/stores/userStore';
-import { Container } from './styled';
+import { Container, FirstLineInFormContainer, ActionContainer } from './styled';
 import {generateSneakerId} from '../service';
 import publishSneakerStore from '../stores/publishSneakerStore';
 
-function InfoInput(props) {
+function InfoInput({
+    handleNext,
+}) {
     const initialValues = {
         brand: 'vans',
         model: 'slip on checkerboard',
@@ -29,16 +31,13 @@ function InfoInput(props) {
                 initialValues={initialValues}
                 onSubmit={(values, { setSubmitting }) => {
                     setSubmitting(true);
+                    handleNext();
                     publishSneakerStore.setLabels(generateSneakerId(values.quantity));
                     delete values.quantity;
                     publishSneakerStore.setBatchInfo({
                         ...values,
                         size: parseFloat(values.size),
                     });
-                    // console.log({
-                    //     ...values,
-                    //     size: parseFloat(values.size),
-                    // });
                   }}
             >
                 {
@@ -51,26 +50,26 @@ function InfoInput(props) {
 
                         return (
                             <>
-                                <FormLayout.Container col={2}>
+                                <FirstLineInFormContainer>
                                     <TextField
+                                        className='brand text-field'
                                         label='Brand'
                                         disabled
                                         name='brand'
                                         onChange={handleChange}
                                         value={values.brand}
                                         margin='normal'
-                                        className='text-field'
                                     />
                                     <TextField
+                                        className='model text-field'
                                         label='Model'
                                         name='model'
                                         onChange={handleChange}
                                         value={values.model}
                                         margin='normal'
-                                        className='text-field'
                                     />
-                                </FormLayout.Container>
-                                <FormLayout.Container col={3}>
+                                </FirstLineInFormContainer>
+                                <FormLayout.Container col={2}>
                                     <TextField
                                         label='Size'
                                         name='size'
@@ -87,6 +86,8 @@ function InfoInput(props) {
                                         margin='normal'
                                         className='text-field'
                                     />
+                                </FormLayout.Container>
+                                <FormLayout.Container col={3}>
                                     <TextField
                                         label='Release Date'
                                         name='releaseDate'
@@ -95,8 +96,6 @@ function InfoInput(props) {
                                         margin='normal'
                                         className='text-field'
                                     />
-                                </FormLayout.Container>
-                                <FormLayout.Container col={2}>
                                     <TextField
                                         label='Quantity'
                                         name='quantity'
@@ -122,23 +121,29 @@ function InfoInput(props) {
                                         label="Limited"
                                     />
                                 </FormLayout.Container>
+                                <ActionContainer>
+                                    <Button
+                                        variant='contained'
+                                        onClick={() => location.reload()} // eslint-disable-line
+                                    >
+                                        Cancel
+                                    </Button>
+                                    <Button
+                                        className='item'
+                                        type="submit"
+                                        onClick={handleSubmit}
+                                        variant="contained"
+                                        color="primary"
+                                    >
+                                        Create QR code
+                                        <LoyaltyIcon 
+                                            style={{
+                                                marginLeft: 10,
+                                            }}
+                                        />
+                                    </Button>
+                                </ActionContainer>
 
-                                <Button
-                                    type="submit"
-                                    style={{
-                                        margin: 10
-                                    }}
-                                    onClick={handleSubmit}
-                                    variant="contained"
-                                    color="primary"
-                                >
-                                    Create QR code
-                                    <LoyaltyIcon 
-                                        style={{
-                                            marginLeft: 10,
-                                        }}
-                                    />
-                                </Button>
                             </>
                         )
                     }

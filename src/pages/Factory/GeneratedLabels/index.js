@@ -1,34 +1,14 @@
 import React from 'react';
-import { observer } from 'mobx-react';
 import List from '@material-ui/core/List';
 
 import Label from './Label'; 
 
+function GeneratedLabels() {
 
-import publishSneakerStore from '../stores/publishSneakerStore';
-
-class GeneratedLabels extends React.Component {
-    render() {
-
-        const labels = publishSneakerStore.labels;
-
-        return (
-            <div>
-                <div>GeneratedLabels</div>
-                <List>
-                    {
-                        labels.map(label => (
-                            <Label
-                                key={label}
-                                data={label}
-                            />
-                        ))
-                    }
-                </List>
-            </div>
-            
-        )
-    }
+    return (
+        <div>
+        </div>
+    )
 }
 
-export default observer(GeneratedLabels);
+export default GeneratedLabels;

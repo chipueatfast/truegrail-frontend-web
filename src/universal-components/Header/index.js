@@ -8,7 +8,6 @@ import headerLogo from '~/assets/img/truegrail_header_logo.png';
 
 import { observer } from 'mobx-react';
 import { Container } from './styled';
-import { Typography } from '@material-ui/core';
 
 @observer
 class Header extends React.Component {
@@ -28,9 +27,9 @@ class Header extends React.Component {
                     }} 
                     alt='logo'
                 />
-                <Typography>
+                <h1>
                     {panelStore.currentPage.get()}
-                </Typography>
+                </h1>
                 <Button
                     className='signout-btn'
                     variant='contained'

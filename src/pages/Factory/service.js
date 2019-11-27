@@ -4,8 +4,6 @@ import randomBytes from 'randombytes';
 import SHA256 from 'crypto-js/sha256';
 import request, { API } from 'utils/request';
 import { showNotice } from '~/utils/notice';
-import trueGrailTokenContract from '~/singletons/trueGrailTokenContract';
-import { callSmartContractMethod } from '~/utils/smartContract';
 import ModalPermission from '~/universal-components/ModalPermission/index';
 import { showModal, closeModal } from '~/utils/modal';
 
@@ -44,17 +42,11 @@ export async function issueSneakerHandler({privateKey, id, batchInfo, onSuccess,
         }
     );
    
-    if (trueGrailTokenContract()) {
+    if (true) {
         try {
             // console.log(toJS(sneakerInfo));
             const hash = hashUnorderedJSON(sneakerInfo);
-            const method = trueGrailTokenContract().methods.issueToken(id, hash);
-            const tx = await callSmartContractMethod({
-                method,
-                privateKey,
-            })
             closeModal();
-            onSuccess(tx);
         } catch(e) {
             console.log(e);
             showNotice('error', e.message, 5000);
