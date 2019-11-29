@@ -6,24 +6,25 @@ import Button from '@material-ui/core/Button';
 import LoyaltyIcon from '@material-ui/icons/Loyalty'
 import { Formik, Field } from 'formik';
 import { FormLayout } from '~/tg-ui/index';
-import userStore from '~/stores/userStore';
 import { Container, FirstLineInFormContainer, ActionContainer } from './styled';
-import {generateSneakerId} from '../service';
-import publishSneakerStore from '../stores/publishSneakerStore';
+import { getItemFromStorage } from '~/utils/localStorage';
 
 function InfoInput({
     handleNext,
+    setBatchInfo,
 }) {
+    const user = getItemFromStorage('user');
+    if (!user) {
+        return 'Can not find the credential';
+    }
     const initialValues = {
-        brand: 'vans',
+        brand: user.brand,
         model: 'slip on checkerboard',
         size: '8.5',
         colorway: 'black-white',
         releaseDate: '2019-01-04',
         quantity: '10',
         limitedEdition: false,
-        condition: 'issued',
-        ownerAddress: userStore.address,
     }
     return (
         <Container>
@@ -31,13 +32,11 @@ function InfoInput({
                 initialValues={initialValues}
                 onSubmit={(values, { setSubmitting }) => {
                     setSubmitting(true);
-                    handleNext();
-                    publishSneakerStore.setLabels(generateSneakerId(values.quantity));
-                    delete values.quantity;
-                    publishSneakerStore.setBatchInfo({
+                    setBatchInfo({
                         ...values,
                         size: parseFloat(values.size),
                     });
+                    handleNext();
                   }}
             >
                 {

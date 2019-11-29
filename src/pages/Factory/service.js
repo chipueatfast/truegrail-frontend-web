@@ -6,6 +6,8 @@ import request, { API } from 'utils/request';
 import { showNotice } from '~/utils/notice';
 import ModalPermission from '~/universal-components/ModalPermission/index';
 import { showModal, closeModal } from '~/utils/modal';
+import { createCorrespondingSneakerHash, generateKeyPair, generateRandomEosAccountName } from '~/utils/eosio';
+import { getItemFromStorage } from '~/utils/localStorage';
 
 export const notifyNewSneaker = async (sneakerId) => {
     showNotice('info',`Successfully issued sneaker no.${sneakerId}`);
@@ -55,12 +57,8 @@ export async function issueSneakerHandler({privateKey, id, batchInfo, onSuccess,
     }
 }
 
-export function generateSneakerId(quantity) {
-    let ids = [];
-    for (let i = 0; i < quantity; i++) {
-        ids.push(randomBytes(6).readUIntBE(0, 6));
-    }
-    return ids;
+function generateSneakerId() {
+    return randomBytes(6).readUIntBE(0, 6);
 }
 
 function sortToGivenOrder(object) {
@@ -77,4 +75,28 @@ export function hashUnorderedJSON(sneaker) {
     const orderedObject = sortToGivenOrder(sneaker);
     const hashInfo = SHA256(JSON.stringify(orderedObject)).toString();
     return hashInfo;
+}
+
+export async function generateStampDetail(batchInfo) {
+    const user = getItemFromStorage('user');
+    const id = generateSneakerId();
+    const hash = createCorrespondingSneakerHash({
+        ...batchInfo,
+        issuerId: user.id,
+    });
+    const eosName = generateRandomEosAccountName();
+    const {
+        privateKey,
+        publicKey,
+    } = await generateKeyPair();
+    console.log(privateKey, publicKey);
+    return {
+        id,
+        hash,
+        eosCreds: {
+            privateKey,
+            publicKey,
+            eosName,
+        },
+    };
 }

@@ -88,6 +88,16 @@ export function createCorrespondingUserHash(user) {
     return CryptoJS.SHA256(JSON.stringify(orderedUser)).toString();
 }
 
+export function createCorrespondingSneakerHash(sneaker) {
+    const keys = ["brand", "model", "colorway", "limitedEdition", "releaseDate", "size"];
+    const orderedSneaker = sortToGivenOrder({
+        object: sneaker,
+        keys,
+    });
+    return CryptoJS.SHA256(JSON.stringify(orderedSneaker)).toString();
+}
+
+
 export async function executeSmartContractMethod({
     method,
     namedParams,

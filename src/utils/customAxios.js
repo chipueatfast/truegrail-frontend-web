@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { server } from '~/api';
+import { server } from '~/api/index';
 
 export function asyncTryCatchReq(reqParams) {
     return axios({
