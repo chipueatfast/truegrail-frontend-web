@@ -5,7 +5,7 @@ import API from '~/api';
 import history from '~/utils/history';
 
 export async function signIn({
-    email,
+    userIdentity,
     password,
 }) { 
     const [err, rs] = await asyncTryCatchReq({
@@ -16,7 +16,7 @@ export async function signIn({
         },
         data: qs.stringify({
             grant_type : 'password',
-            username: email.trim(),
+            username: userIdentity.trim(),
             password,
         }),
         auth: {

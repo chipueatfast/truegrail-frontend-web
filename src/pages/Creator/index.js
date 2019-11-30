@@ -26,7 +26,7 @@ import LoadingIndicator from '~/universal-components/LoadingIndicator/index';
 
 
 const validationSchema = Yup.object().shape({
-    email: Yup.string().email('Invalid email').required('This field is mandatory'),
+    userIdentity: Yup.string().email('Invalid email').required('This field is mandatory'),
     username: Yup.string().required('This field is mandatory'),
     address: Yup.string().required('This field is mandatory'),
     brand: Yup.string().required('This field is mandatory'),
@@ -78,6 +78,7 @@ function Creator() {
     }, [])
     function submitFactoryForm(values, {setSubmitting}) {
         setSubmitting(true);
+        console.log('hello ???');
         showModalComponent({
             modalTitle: 'Add new factory',
             renderModalContent: () => (
@@ -117,7 +118,7 @@ function Creator() {
             <Formik
                 validationSchema={validationSchema}
                 initialValues={{
-                    email: '',
+                    userIdentity: '',
                     username: '',
                     address: '',
                     brand: '',
@@ -137,13 +138,13 @@ function Creator() {
                             <Grid item xs={12}>
                                 <TextField
                                     className='text-field'
-                                    value={values.email}
-                                    name='email'
+                                    value={values.userIdentity}
+                                    name='userIdentity'
                                     onChange={handleChange}
                                     label='Factory Email'
                                 />
                                 <CustomizedErrorMessage
-                                    name='email'
+                                    name='userIdentity'
                                 />
                             </Grid>
                             <Grid item xs={6}>

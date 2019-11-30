@@ -25,7 +25,7 @@ function SignIn() {
             />
             <Formik
                 initialValues={{
-                    email: '',
+                    userIdentity: '',
                     password: '',
                 }}
                 onSubmit={onSubmit}
@@ -37,10 +37,10 @@ function SignIn() {
                     <>
                         <TextField
                             className='text-field'
-                            name='email'
+                            name='userIdentity'
                             onChange={handleChange}
                             label='Email'
-                            value={values.email}
+                            value={values.userIdentity}
                         />
                         <TextField
                             className='text-field'
