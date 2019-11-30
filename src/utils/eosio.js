@@ -80,7 +80,7 @@ function sortToGivenOrder({
 }
 
 export function createCorrespondingUserHash(user) {
-    const keys = ['email', 'username', 'eosName', 'publicKey', 'role', 'address', 'brand'];
+    const keys = ['userIdentity', 'username', 'eosName', 'publicKey', 'role', 'address', 'brand'];
     const orderedUser = sortToGivenOrder({
         object: user,
         keys,
