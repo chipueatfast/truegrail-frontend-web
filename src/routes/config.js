@@ -24,6 +24,11 @@ export default [
         component: dynamicWrapper(() => import('../pages/Creator')),
     },
     {
+        canActivate: [validRole.bind(null, 'collector')],
+        path: '/lab',
+        component: dynamicWrapper(() => import('../pages/Lab')),
+    },
+    {
         canActivate: [isNotIndentified],
         path: '/signin',
         component: dynamicWrapper(() => import('../pages/SignIn')),
