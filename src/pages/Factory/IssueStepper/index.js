@@ -3,7 +3,6 @@ import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 
-import GrailStamp from '../GrailStamp';
 import InfoInput from '../InfoInput';
 import { useStyles, StepContainer } from './styled';
 import GeneratedStamps from '../GeneratedStamps/index';
@@ -15,7 +14,9 @@ function getSteps() {
     ];
 }
 
-function IssueStepper() {
+function IssueStepper({
+  password,
+}) {
     const classes = useStyles();
     const [activeStep, setActiveStep] = React.useState(0);
     const [batchInfo, setBatchInfo] = React.useState({});
@@ -43,9 +44,9 @@ function IssueStepper() {
     }
 
     function renderPrintList() {
-      console.log(batchInfo);
       return (
         <GeneratedStamps
+          password={password}
           batchInfo={batchInfo}
         />
       );

@@ -7,6 +7,7 @@ import headerConfig from '~/routes/header';
 import GlobalStyle from '~/styles/GlobalStyle';
 import routerConfig from '../routes/config';
 import { UniversalNotice, UniversalModal }from '~/universal-components';
+import { encryptPrivateKey } from '~/utils/eosio';
 
 const Container = styled.div`
   display: flex;

@@ -42,3 +42,27 @@ export const storeItem = (key, value) => {
     console.error(`Error storing item ${key} to localStorage`, err);
   }
 };
+
+export const getSelfId = () => {
+  const user = getItemFromStorage('user');
+  if (!user) {
+    return undefined;
+  }
+  return user.id;
+}
+
+export const getEosName = () => {
+  const user = getItemFromStorage('user');
+  if (!user) {
+    return undefined;
+  }
+  return user.eosName;
+}
+
+export const getEncryptedPrivateKey = () => {
+  const user = getItemFromStorage('user');
+  if (!user) {
+    return undefined;
+  }
+  return user.encryptedPrivateKey;
+}

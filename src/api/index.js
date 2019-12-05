@@ -15,6 +15,9 @@ export default () => {
         sneaker: () => '/sneaker',
         sneakerCollection: (address) => `/user/ownership/${address}`,
         changeOwnership: () => '/sneaker/ownership',
+
+        // POST
+        createSneakerClaimAccount: (factoryId) => `/sneaker/eos/${factoryId}`,
         
     })
 }

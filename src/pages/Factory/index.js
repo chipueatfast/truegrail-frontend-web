@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import Button from '@material-ui/core/Button';
 import SneakerStamp from '~/assets/img/sneaker_stamp.png'
-import InfoInput from './InfoInput';
-import IssueStepper from './IssueStepper';
+import { showRequiringPasswordModal, closeModal } from '~/utils/modal';
+import IssueStepper from './IssueStepper/index';
 import { Container, IssueActionBox } from './styled';
 import panelStore from '~/stores/panelStore';
+import { showNotice } from '~/utils/notice';
+import { authenticateIssuingSneaker } from './service';
 
 
 
 function Factory() {
     const [component, setComponent] = useState(0);
+    const [password, setPassword] = useState('');
 
     useEffect(() => {
         panelStore.currentPage.set('FACTORY');
@@ -27,7 +30,22 @@ function Factory() {
                     <Button
                         variant='contained'
                         onClick={() => {
-                            setComponent(1);
+                            showRequiringPasswordModal({
+                                title: 'Issue sneaker',
+                                protectedCallback: async (password) => {
+                                    const {
+                                        error,
+                                    } = await authenticateIssuingSneaker(password);
+                                    if (error) {
+                                        showNotice('error', error);
+                                        closeModal();
+                                        return;
+                                    }
+                                    setPassword(password);
+                                    setComponent(1);
+                                    closeModal();
+                                }
+                            });
                         }}
                     >
                         Issue Sneakers
@@ -36,7 +54,9 @@ function Factory() {
             }
             {
                 component === 1 &&
-                <IssueStepper />
+                <IssueStepper
+                    password={password}
+                />
             }
         </Container>
     );

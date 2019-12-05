@@ -2,7 +2,7 @@ import { observable, action } from 'mobx';
 import request, { API } from '~/utils/request';
 import { showNotice } from '~/utils/notice';
 import userStore from '~/stores/userStore';
-import { checkOwnership } from '../service';
+// import { checkOwnership } from '../service';
 
 class CollectionStore {
     @observable sneakers = [];
@@ -17,7 +17,7 @@ class CollectionStore {
         });
         if (!rs.err) {
             rs.forEach(async snkr => {
-                if(await checkOwnership(snkr.id)) {
+                if(true) {
                     this.sneakers.push(snkr);
                 }
             });

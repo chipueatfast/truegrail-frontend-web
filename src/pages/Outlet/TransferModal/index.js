@@ -7,7 +7,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { Container } from './styled';
 
-import { showTransferSneakerPermissionModal } from '../service';
+// import { showTransferSneakerPermissionModal } from '../service';
 import { closeModal } from '~/utils/modal';
 
 function TransferModal({
@@ -26,10 +26,10 @@ function TransferModal({
                     if (valid) {
                         // transfer sneaker;
                         closeModal();
-                        showTransferSneakerPermissionModal({
-                            sneakerInfo,
-                            toAddress: values.address,
-                        });
+                        // showTransferSneakerPermissionModal({
+                        //     sneakerInfo,
+                        //     toAddress: values.address,
+                        // });
                         return;
                     }
                     else {

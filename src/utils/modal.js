@@ -1,8 +1,11 @@
 import React from 'react';
-import panelStore from '~/stores/panelStore';
-import { AlertModal } from 'tg-ui';
-
 import LinearProgress from '@material-ui/core/LinearProgress';
+
+import { AlertModal } from 'tg-ui';
+import panelStore from '~/stores/panelStore';
+
+import RequiringPasswordModal from '~/universal-components/RequiringPasswordModal/index';
+
 
 export function showModalComponent({
     modalTitle,
@@ -33,6 +36,20 @@ export const showAlertModal = (message) => {
 
 export const closeModal = () => {
     panelStore.closeModal();
+}
+
+export function showRequiringPasswordModal({
+    title,
+    protectedCallback,
+}) {
+    showModalComponent({
+        modalTitle: title,
+        renderModalContent: () => (
+            <RequiringPasswordModal
+                protectedCallback={protectedCallback}
+            />
+        )
+    })
 }
 
 export const showLinear = () => {

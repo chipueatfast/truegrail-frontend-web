@@ -5,6 +5,8 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Collapse from '@material-ui/core/Collapse';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
+import { showNotice } from '~/utils/notice';
+import { issueSneakerToSystem } from '../service';
 import { 
     StampContainer, MainContainer, useStyles,
     QRContainer, ActionContainer, ActionItem,
@@ -14,7 +16,8 @@ import {
 function GrailStamp({
     id,
     hash,
-    eosCreds
+    eosCreds,
+    password,
 }) {
     const classes = useStyles();
     const {
@@ -24,13 +27,12 @@ function GrailStamp({
     } = eosCreds;
 
     const [expanded, setExpanded] = React.useState(false);
-
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
 
     return (
-        <StampContainer>
+        <StampContainer className='w-100'>
             <MainContainer>
                 <QRContainer>
                     <QRCode
@@ -41,6 +43,18 @@ function GrailStamp({
                 <ActionContainer>
                     <ActionItem>
                         <Button
+                            onClick={async () => {
+                                const rs = await issueSneakerToSystem(password, {
+                                    id,
+                                    claimPublicKey: publicKey,
+                                    claimEosName: eosName,
+                                    infoHash: hash,
+                                });
+                                if (rs.error) {
+                                    showNotice('error', rs.error);
+                                }
+                                console.log(rs.isIssued);
+                            }}
                             theme='primary'
                             variant='contained'
                         >

@@ -5,6 +5,10 @@ import { validRole, isNotIndentified } from './guards';
 
 export default [
     {
+        path: '/lab',
+        component: dynamicWrapper(() => import('~/pages/Lab'))
+    },
+    {
         path: '/sim',
         component: dynamicWrapper(() => import('~/pages/SimUser')),
     },
