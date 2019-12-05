@@ -3,6 +3,7 @@ import { getItemFromStorage } from '~/utils/localStorage';
 const correspondingUrl = {
     'factory': '/factory',
     'creator': '/creator',
+    'collector': '/lab',
 }
 
 export default function isNotIndentified(role) {

@@ -15,9 +15,15 @@ import {
 
 function GrailStamp({
     id,
-    hash,
+    infoHash,
     eosCreds,
     password,
+    brand,
+    colorway,
+    limitedEdition,
+    model,
+    releaseDate,
+    size,
 }) {
     const classes = useStyles();
     const {
@@ -48,7 +54,13 @@ function GrailStamp({
                                     id,
                                     claimPublicKey: publicKey,
                                     claimEosName: eosName,
-                                    infoHash: hash,
+                                    infoHash,
+                                    brand,
+                                    colorway,
+                                    limitedEdition,
+                                    model,
+                                    releaseDate,
+                                    size,
                                 });
                                 if (rs.error) {
                                     showNotice('error', rs.error);

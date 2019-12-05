@@ -45,6 +45,7 @@ export async function addNewFactoryToSystem({
     } = await uploadFactoryInfoHashOntoBlockchain({
         id,
         role: 'factory',
+        eosName,
         eosInfoHash,
     }, password);
     if (blockchainError) {
@@ -173,11 +174,13 @@ async function uploadFactoryInfoHashOntoBlockchain({
     id,
     role,
     eosInfoHash,
+    eosName,
 }, password) {
     const rs = await executeSmartContractMethod({
         method: 'insertuser',
         namedParams: {
             user_id: id,
+            eos_name: eosName,
             user_info_hash: eosInfoHash,
             role,
         },

@@ -1,6 +1,6 @@
 import { dynamicWrapper } from 'react-router-guard';
 
-import { validRole, isNotIndentified } from './guards';
+import { validRole, isNotIndentified } from './guards/index';
 
 
 export default [

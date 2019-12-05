@@ -78,7 +78,6 @@ function Creator() {
     }, [])
     function submitFactoryForm(values, {setSubmitting}) {
         setSubmitting(true);
-        console.log('hello ???');
         showModalComponent({
             modalTitle: 'Add new factory',
             renderModalContent: () => (

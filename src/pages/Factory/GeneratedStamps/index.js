@@ -41,6 +41,7 @@ function GeneratedStamps({
                         return (
                             <ListItem key={stamp.id}>
                                 <GrailStamp
+                                    {...batchInfo}
                                     password={password}
                                     {...stamp}
                                 />

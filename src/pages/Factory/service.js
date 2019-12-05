@@ -14,27 +14,6 @@ function generateSneakerId() {
     return randomBytes(6).readUIntBE(0, 6);
 }
 
-async function createClaimAccountForSneaker({
-    claimEosName,
-    claimPublicKey
-}) {
-    const [error, data] = await asyncTryCatchReq({
-        url: API().createSneakerClaimAccount(getSelfId()),
-        data: {
-            claimEosName,
-            claimPublicKey,
-        },
-        method: 'POST',
-    }, true);
-    if (error) {
-        return false;
-    };
-    if (data.claimEosName && data.claimPublicKey) {
-        return true;
-    }
-
-}
-
 
 async function isFactoryOfContract(password) {
     const rs = await executeSmartContractMethod({
@@ -59,23 +38,65 @@ export async function authenticateIssuingSneaker(password) {
     return {};
 } 
 
-export async function issueSneakerToSystem(password, blockchainSneaker) {
+// const [error, data] = await asyncTryCatchReq({
+//     url: API().issueSneaker(getSelfId()),
+//     data: {
+//         claimEosName,
+//         claimPublicKey,
+//     },
+//     method: 'POST',
+// }, true);
+
+export const registerSneakerDetailToDatabase = async ({
+    id,
+    claimEosName,
+    claimPublicKey,
+    model,
+    limitedEdition,
+    brand,
+    colorway,
+    size,
+    releaseDate,
+}) => {
+    const [error] = await asyncTryCatchReq({
+        url: API().issueSneaker(getSelfId()),
+        data: {
+            id,
+            claimEosName,
+            claimPublicKey,
+            model,
+            limitedEdition,
+            brand,
+            colorway,
+            size,
+            releaseDate,
+        },
+        method: 'POST',
+    }, true);
+    if (error) {
+        return {
+            error,
+        };
+    };
+    return {};
+}
+
+export async function issueSneakerToSystem(password, blockchainSneaker) { 
+    const newSneaker = await registerSneakerDetailToDatabase(blockchainSneaker);
+
+    if (newSneaker.error) {
+        return {
+            error: newSneaker.error,
+        };
+    }
+
     const {
         id,
         claimEosName,
         infoHash,
-        claimPublicKey,
     } = blockchainSneaker;
-    const isRegisteredOnEos = await createClaimAccountForSneaker({
-        claimEosName,
-        claimPublicKey,
-    })
-    if (!isRegisteredOnEos) {
-        return {
-            error: 'The claim account can not be created',
-        }
-    }
-    const rs = await executeSmartContractMethod({
+
+    const blockchainRs = await executeSmartContractMethod({
         method: 'issue',
         namedParams: {
             factory: getEosName(),
@@ -85,9 +106,9 @@ export async function issueSneakerToSystem(password, blockchainSneaker) {
             sneaker_info_hash: infoHash,
         }
     }, password);
-    if (rs.error) {
+    if (blockchainRs.error) {
         return {
-            error: rs.error.message,
+            error: blockchainRs.error.message,
         }
     };
     return {};
@@ -96,7 +117,7 @@ export async function issueSneakerToSystem(password, blockchainSneaker) {
 export async function generateStampDetail(batchInfo) {
     const user = getItemFromStorage('user');
     const id = generateSneakerId();
-    const hash = createCorrespondingSneakerHash({
+    const infoHash = createCorrespondingSneakerHash({
         ...batchInfo,
         issuerId: user.id,
     });
@@ -107,7 +128,7 @@ export async function generateStampDetail(batchInfo) {
     } = await generateKeyPair();
     return {
         id,
-        hash,
+        infoHash,
         eosCreds: {
             privateKey,
             publicKey,

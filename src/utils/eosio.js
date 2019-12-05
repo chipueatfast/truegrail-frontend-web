@@ -96,7 +96,7 @@ export function createCorrespondingUserHash(user) {
 }
 
 export function createCorrespondingSneakerHash(sneaker) {
-    const keys = ["brand", "model", "colorway", "limitedEdition", "releaseDate", "size"];
+    const keys = ['factoryId', 'brand', 'model', 'colorway', 'limitedEdition', 'releaseDate', 'size'];
     const orderedSneaker = sortToGivenOrder({
         object: sneaker,
         keys,

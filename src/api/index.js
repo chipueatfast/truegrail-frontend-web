@@ -17,7 +17,7 @@ export default () => {
         changeOwnership: () => '/sneaker/ownership',
 
         // POST
-        createSneakerClaimAccount: (factoryId) => `/sneaker/eos/${factoryId}`,
+        issueSneaker: (factoryId) => `/sneaker/factory/${factoryId}/`,
         
     })
 }
