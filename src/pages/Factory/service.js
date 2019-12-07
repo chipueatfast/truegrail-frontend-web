@@ -3,7 +3,7 @@ import randomBytes from 'randombytes';
 import { showNotice } from '~/utils/notice';
 import API from '~/api/index';
 import { createCorrespondingSneakerHash, generateKeyPair, generateRandomEosAccountName, executeSmartContractMethod } from '~/utils/eosio';
-import { getItemFromStorage, getSelfId, getEosName } from '~/utils/localStorage';
+import { getSelfId, getEosName } from '~/utils/localStorage';
 import { asyncTryCatchReq } from '~/utils/customAxios';
 
 export const notifyNewSneaker = async (sneakerId) => {
@@ -115,11 +115,10 @@ export async function issueSneakerToSystem(password, blockchainSneaker) {
 }
 
 export async function generateStampDetail(batchInfo) {
-    const user = getItemFromStorage('user');
     const id = generateSneakerId();
     const infoHash = createCorrespondingSneakerHash({
         ...batchInfo,
-        issuerId: user.id,
+        factoryId: getSelfId(),
     });
     const eosName = generateRandomEosAccountName();
     const {
