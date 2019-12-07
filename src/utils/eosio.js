@@ -150,3 +150,48 @@ export async function executeSmartContractMethod({
         }
     }
 }
+
+
+export async function executeSmartContractMethodWithDirectPrivateKey({
+    method, 
+    namedParams,
+}, {
+    eosName,
+    privateKey,
+}) {
+    try {
+        const signatureProvider = new JsSignatureProvider([privateKey]);
+        const api = new Api({
+            rpc,
+            signatureProvider,
+        });
+        await api.transact({
+            actions: [
+                {
+                    account: EOS_SPEC.smartContract,
+                    name: method,
+                    authorization: [
+                        {
+                            actor: eosName,
+                            permission: 'active',
+                        },
+                    ],
+                    data: namedParams,
+                }]}, {
+            blocksBehind: 3,
+            expireSeconds: 30,
+        });
+        return {};
+    } catch (e) {
+        console.log('\nCaught exception: ' + e);
+        if (e instanceof RpcError) {
+            console.log(JSON.stringify(e.json, null, 2));
+            return {
+                error: e.json,
+            }
+        }
+        return {
+            error: e.message,
+        }
+    }
+}
