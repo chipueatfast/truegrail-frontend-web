@@ -39,7 +39,7 @@ function FactoryTable({
                   key={row.username}
                 >
                   <ConditionalTableCell iscontrast={isBlockchainMatchedToNumber}>{row.username}</ConditionalTableCell>
-                  <ConditionalTableCell iscontrast={isBlockchainMatchedToNumber}>{row.email}</ConditionalTableCell>
+                  <ConditionalTableCell iscontrast={isBlockchainMatchedToNumber}>{row.userIdentity}</ConditionalTableCell>
                   <ConditionalTableCell iscontrast={isBlockchainMatchedToNumber}>{row.address}</ConditionalTableCell>
                   <ConditionalTableCell iscontrast={isBlockchainMatchedToNumber}>{row.brand}</ConditionalTableCell>
                 </TableRow>
