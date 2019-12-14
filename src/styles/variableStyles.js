@@ -9,17 +9,19 @@ export const addGlobalStyle = (component, globalClassNames) => (props) => {
 export default {
     font: {
         desktop: {
+            big: '21px',
             standard: '16px',
         },
     },
     color: {
-        green: '#146062',
+        green: '#38aa56',
         darkGreen: '#146062',
         red: '#d0021b',
         black: '#19181B',
         orange: '#FF773F',
         gray: '#B0ACA8',
         white: '#FEFDF6',
+        yellow: '#fedb41',
     },
     screen: {
         xs: '480px',
