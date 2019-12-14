@@ -19,6 +19,7 @@ function SignIn() {
     }
     return (
         <Container>
+            <h1>Welcome to TrueGrails</h1>
             <Miniature
                 src={AuthenticationMiniature}
                 alt='miniature'

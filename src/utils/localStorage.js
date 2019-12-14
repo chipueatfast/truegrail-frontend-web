@@ -51,6 +51,16 @@ export const getSelfId = () => {
   return user.id;
 }
 
+export const getBrand = () => {
+  const user = getItemFromStorage('user');
+  return user.brand;
+}
+
+export const getRole = () => {
+  const user = getItemFromStorage('user');
+  return user.role;
+}
+
 export const getEosName = () => {
   const user = getItemFromStorage('user');
   if (!user) {

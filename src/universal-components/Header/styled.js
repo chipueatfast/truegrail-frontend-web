@@ -7,8 +7,19 @@ export const Container = styled.div`
     justify-content: space-between;
     border-bottom: 1px solid black;
     width: 100%;
+`
 
-    .signout-btn {
-        margin: 12px 60px;
-    }
+export const LogoContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+`
+
+export const ActionContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-right: 48px;
 `
