@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { server } from '~/api/index';
 import { getItemFromStorage } from './localStorage';
+import userStore from '~/stores/userStore';
 
 
 export function composeAccessTokenHeader() {
@@ -18,6 +19,9 @@ export function asyncTryCatchReq(reqParams, isAuthenticated) {
     }).then(data => {
         return [null, data];
     }).catch(err => {
+        if (err.response && err.response.status === 401) {
+            userStore.logOut();
+        }
         const errorData = err.response.data;
         return [errorData];
     });
