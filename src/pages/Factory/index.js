@@ -8,12 +8,10 @@ import panelStore from '~/stores/panelStore';
 import { showNotice } from '~/utils/notice';
 import { authenticateIssuingSneaker } from './service';
 
-import DesignedStamp from './DesignedStamp';
-
 
 
 function Factory() {
-    const [component, setComponent] = useState(2);
+    const [component, setComponent] = useState(0);
     const [password, setPassword] = useState('');
 
     useEffect(() => {
@@ -58,14 +56,6 @@ function Factory() {
                 component === 1 &&
                 <IssueStepper
                     password={password}
-                />
-            }
-            {
-                component === 2 &&
-                <DesignedStamp
-                    id={181149779059064}
-                    eosName='g3a5ega5355a'
-                    infoHash='4ddcee01a38dcd9bb81a44a3549501e4bf77110380f39cd8711d0a10f8cd8e75'
                 />
             }
         </Container>

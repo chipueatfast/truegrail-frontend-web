@@ -108,7 +108,7 @@ export async function issueSneakerToSystem(password, blockchainSneaker) {
     }, password);
     if (blockchainRs.error) {
         return {
-            error: blockchainRs.error.message,
+            error: blockchainRs.error,
         }
     };
     return {};

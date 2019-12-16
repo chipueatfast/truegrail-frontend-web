@@ -6,37 +6,47 @@ import ErrorIcon from '@material-ui/icons/Error';
 import Tooltip from '@material-ui/core/Tooltip';
 import { simulateLongFetch } from '~/utils/async';
 import LoadingIndicator from '~/universal-components/LoadingIndicator/index';
-import LoadingDot from '~/tg-ui/LoadingDot/index';
 import { Container, QRContainer, DetailContainer, ActionContainer } from './styled';
-
+import { issueSneakerToSystem } from '../service';
 
 function DesignedStamp({
     id,
-    eosName,
+    eosCreds,
     infoHash,
+    batchInfo,
+    password,
 }) {
+    const {
+        brand,
+        colorway,
+        limitedEdition,
+        model,
+        releaseDate,
+        size,
+    } = batchInfo;
+    const {
+        privateKey,
+        eosName,
+        publicKey,
+    } = eosCreds;
     const [issueStatus, setIssueStatus] = useState(0);
-    const [isPreparingPdf, setIsPreparingPdf] = useState(0);
+
     function renderPdfLink() {
         return (
-            <>
-                {
-                    isPreparingPdf === 0 ?
-                    <LoadingDot
-                        width={40}
-                        height={10}
-                        color='black'
-                    /> :
-                    <Button         
-                        onClick={() => {
-                            console.log('supposed to download pdf here');
-                        }}
-                        variant='contained'
-                    >
-                        Get Hardcopy
-                    </Button> 
-                }
-            </>
+            <Button         
+                onClick={() => {
+                    const hardCopyData = {
+                        id,
+                        privateKey,
+                        batchInfo,
+                    };
+                    const encodedHardCopyData = btoa(JSON.stringify(hardCopyData));
+                    window.open(`/hardcopy?hardCopyData=${encodedHardCopyData}`);
+                }}
+                variant='contained'
+            >
+                Get Hardcopy
+            </Button> 
         )
     }
     function renderAction() {
@@ -48,10 +58,25 @@ function DesignedStamp({
                             variant='contained'
                             onClick={async () => {
                                 setIssueStatus(1);
+                                const rs = await issueSneakerToSystem(password, {
+                                    id,
+                                    claimPublicKey: publicKey,
+                                    claimEosName: eosName,
+                                    infoHash,
+                                    brand,
+                                    colorway,
+                                    limitedEdition,
+                                    model,
+                                    releaseDate,
+                                    size,
+                                });
+                                if (rs.error) {
+                                    setIssueStatus(3);
+                                    return;
+                                }
                                 await simulateLongFetch(3000);
-                                setIssueStatus(3);
+                                setIssueStatus(2);
                                 await simulateLongFetch(3000);
-                                setIsPreparingPdf(1);
                             }}
                         >
                             ISSUE
@@ -116,7 +141,9 @@ function DesignedStamp({
 
     return (
         <Container issueStatus={issueStatus}>
-                <QRContainer>
+                <QRContainer
+                    id={`qr-code-${id}`}
+                >
                     <QRCode
                         value={id.toString()}
                         logo='https://images-na.ssl-images-amazon.com/images/I/51bxzYh9IWL._SX425_.jpg'

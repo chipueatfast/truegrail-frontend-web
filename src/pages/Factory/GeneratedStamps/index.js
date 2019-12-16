@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import GrailStamp from '../GrailStamp/index';
+import DesignedStamp from '../DesignedStamp';
 import { Container, LoadingContainer } from './styled';
 import { generateStampDetail } from '../service';
 import LoadingIndicator from '~/universal-components/LoadingIndicator/index';
@@ -40,10 +40,10 @@ function GeneratedStamps({
                     stamps.map(stamp => {
                         return (
                             <ListItem key={stamp.id}>
-                                <GrailStamp
-                                    {...batchInfo}
-                                    password={password}
+                                <DesignedStamp
                                     {...stamp}
+                                    password={password}
+                                    batchInfo={batchInfo}
                                 />
                             </ListItem>
                         )

@@ -9,6 +9,7 @@ export const addGlobalStyle = (component, globalClassNames) => (props) => {
 export default {
     font: {
         desktop: {
+            bigger: '36px',
             big: '21px',
             standard: '16px',
         },
