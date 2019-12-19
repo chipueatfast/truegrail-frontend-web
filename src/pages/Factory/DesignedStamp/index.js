@@ -23,6 +23,7 @@ function DesignedStamp({
         model,
         releaseDate,
         size,
+        furtherSpec,
     } = batchInfo;
     const {
         privateKey,
@@ -69,6 +70,7 @@ function DesignedStamp({
                                     model,
                                     releaseDate,
                                     size,
+                                    furtherSpec,
                                 });
                                 if (rs.error) {
                                     setIssueStatus(3);

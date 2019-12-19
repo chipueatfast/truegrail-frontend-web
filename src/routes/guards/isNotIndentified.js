@@ -9,7 +9,7 @@ const correspondingUrl = {
 export default function isNotIndentified(role) {
     return new Promise((resolve, reject) => {
         const user = getItemFromStorage('user');
-        if (!user) {
+        if (!user || !user.id) {
             resolve(true);
         };
         if (user) {

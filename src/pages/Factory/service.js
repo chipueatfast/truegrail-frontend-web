@@ -57,6 +57,7 @@ export const registerSneakerDetailToDatabase = async ({
     colorway,
     size,
     releaseDate,
+    furtherSpec,
 }) => {
     const [error] = await asyncTryCatchReq({
         url: API().issueSneaker(getSelfId()),
@@ -70,6 +71,7 @@ export const registerSneakerDetailToDatabase = async ({
             colorway,
             size,
             releaseDate,
+            furtherSpec,
         },
         method: 'POST',
     }, true);

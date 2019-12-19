@@ -25,6 +25,7 @@ function InfoInput({
         releaseDate: '2019-01-04',
         quantity: '10',
         limitedEdition: false,
+        furtherSpec: '',
     }
     return (
         <Container>
@@ -118,6 +119,18 @@ function InfoInput({
                                             />
                                         }
                                         label="Limited"
+                                    />
+                                </FormLayout.Container>
+                                <FormLayout.Container>
+                                    <TextField
+                                        name='furtherSpec'
+                                        onChange={handleChange}
+                                        label="Further specification"
+                                        multiline
+                                        rows="4"
+                                        value={values.furtherSpec}
+                                        margin="normal"
+                                        className='text-field'
                                     />
                                 </FormLayout.Container>
                                 <ActionContainer>
