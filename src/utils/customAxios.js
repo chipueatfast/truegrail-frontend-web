@@ -22,6 +22,11 @@ export function asyncTryCatchReq(reqParams, isAuthenticated) {
         if (err.response && err.response.status === 401) {
             userStore.logOut();
         }
+        if (!err.response) {
+            return [{
+                message: 'Can not connect to host',
+            }]
+        }
         const errorData = err.response.data;
         return [errorData];
     });

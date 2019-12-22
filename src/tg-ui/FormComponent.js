@@ -10,12 +10,19 @@ const ErrorContainer = addGlobalStyle(
     ['color-negative', 'bold']
 )
 
-export function CustomizedErrorMessage({ name }) {
+export function CustomizedErrorMessage({ name, value }) {
     return (
         <ErrorContainer>
-            <ErrorMessage
-                name={name}
-            />
+            {
+                name ? (            
+                <ErrorMessage
+                    name={name}
+                />) :
+                <span>
+                    {value}
+                </span>
+            }
+
         </ErrorContainer>
     )
 }

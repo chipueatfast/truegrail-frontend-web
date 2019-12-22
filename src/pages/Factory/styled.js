@@ -9,6 +9,16 @@ export const Container = styled.div`
     flex-direction: column;
 `
 
+export const ActionContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    > div {
+        margin: 0 10px;
+    }
+    
+`
+
+
 export const IssueActionBox = styled.div`
     padding: 24px;
     display: flex;
@@ -16,7 +26,7 @@ export const IssueActionBox = styled.div`
     align-items: center;
     justify-content: space-between;
     img {
-        width: 200px;
+        height: 100px;
         object-fit: contain;
         margin: 12px;
     }

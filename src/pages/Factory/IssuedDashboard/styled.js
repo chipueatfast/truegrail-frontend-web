@@ -9,7 +9,7 @@ export const Container = styled.div`
 `
 
 export const ConditionalTableCell = styled(TableCell)`
-  color: ${props => !!props.iscontrast ? 'black' : 'white'} !important;
+  color: 'black';
 `
 export const InverseTableCell = addGlobalStyle(styled(TableCell)``, ['color-white', 'bg-general']);
 

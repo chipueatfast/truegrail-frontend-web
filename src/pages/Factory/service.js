@@ -91,8 +91,7 @@ export async function getIssuedSneakers() {
     if (err) {
         return [];
     }
-
-    return rs.sneakers;
+    return rs.data.sneakers;
 }
 
 export async function issueSneakerToSystem(password, blockchainSneaker) { 

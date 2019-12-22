@@ -4,6 +4,7 @@ import { JsSignatureProvider } from 'eosjs/dist/eosjs-jssig';
 import CryptoJS from 'crypto-js';
 import { getItemFromStorage } from './localStorage';
 import { isProduction } from '~/utils/environment';
+import { asyncTryCatchReq } from '~/utils/customAxios';
 
 const EOS_SPEC = isProduction() ? {
     server: 'http://jungle2.cryptolions.io:80',
@@ -194,4 +195,30 @@ export async function executeSmartContractMethodWithDirectPrivateKey({
             error: e.message,
         }
     }
+}
+
+export async function getItemByPrimaryKey({
+    table,
+    primaryKeyValue,
+}) {
+    const {
+        server,
+        smartContract,
+    } = EOS_SPEC;
+    const [err, rs] = await asyncTryCatchReq({
+        url: `${server}/v1/chain/get_table_rows`,
+        method: 'post',
+        data: {
+            json: true,
+            code: smartContract,
+            table,
+            scope: smartContract,
+            upper_bound: primaryKeyValue,
+            lower_bound: primaryKeyValue,           
+        },
+    });
+    if (err) {
+        return null;
+    }
+    return rs.data.rows[0];
 }

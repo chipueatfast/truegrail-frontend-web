@@ -3,9 +3,10 @@ import Button from '@material-ui/core/Button';
 import SneakerStamp from '~/assets/img/sneaker_stamp.png'
 import { showRequiringPasswordModal, closeModal } from '~/utils/modal';
 import IssueStepper from './IssueStepper/index';
-import { Container, IssueActionBox } from './styled';
+import { Container, IssueActionBox, ActionContainer } from './styled';
 import panelStore from '~/stores/panelStore';
 import { showNotice } from '~/utils/notice';
+import IssuedDashboardMiniature from '~/assets/img/miniature/issuedDashboard.png';
 import { authenticateIssuingSneaker } from './service';
 import IssuedDashboard from './IssuedDashboard/index';
 
@@ -23,7 +24,8 @@ function Factory() {
         <Container>
             {
             component === 0 &&
-            <IssueActionBox>
+            <ActionContainer>
+                <IssueActionBox>
                     <img
                         src={SneakerStamp}
                         alt='sneaker_stamp'
@@ -51,7 +53,22 @@ function Factory() {
                     >
                         Issue Sneakers
                     </Button>
-            </IssueActionBox>
+                </IssueActionBox>
+                <IssueActionBox>
+                    <img
+                        alt='miniature'
+                        src={IssuedDashboardMiniature}
+                    />
+                    <Button
+                        onClick={() => {
+                            setComponent(2);
+                        }}
+                        variant='contained'
+                    >
+                        Go to issued dashboard
+                    </Button>
+                </IssueActionBox>
+            </ActionContainer>
             }
             {
                 component === 1 &&

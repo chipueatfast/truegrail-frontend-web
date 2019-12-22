@@ -7,6 +7,37 @@ export const Container = styled.div`
     }
 `
 
+export const CenterContainer = styled.div`
+    display: flex;
+    flex-direction:row;
+    justify-content: start;
+    align-items: center;
+`
+export const ColorPickerContainer = styled.div`
+    cursor: pointer;
+    .color {
+        box-shadow: 0 0 0 1px rgba(0,0,0,.1);
+        width: 80px;
+        height: 30px;
+        border-radius: 2px;
+        background: ${({color}) => color};
+    }
+    .sketch-picker {
+        color: black;
+    }
+    .popover {
+        position: absolute;
+        z-index: 2;
+    }
+    .cover {
+        position: fixed;
+        top: 0px;
+        right: 0px;
+        bottom: 0px;
+        left: 0px;
+    },
+`;
+
 export const ActionContainer = styled.div`
     display: flex;
     flex-direction: row;

@@ -9,9 +9,9 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import headerLogo from '~/assets/img/truegrail_header_logo.png';
 
-import VansLogo from '~/assets/img/logo/vans.svg';
-import NikeLogo from '~/assets/img/logo/nike.svg';
-import AdidasLogo from '~/assets/img/logo/adidas.svg';
+import VansLogo from '~/assets/img/logo/vans.png';
+import NikeLogo from '~/assets/img/logo/nike.png';
+import AdidasLogo from '~/assets/img/logo/adidas.png';
 
 import { observer } from 'mobx-react';
 import { Container, LogoContainer, ActionContainer } from './styled';
