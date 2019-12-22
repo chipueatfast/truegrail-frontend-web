@@ -7,6 +7,7 @@ import { Container, IssueActionBox } from './styled';
 import panelStore from '~/stores/panelStore';
 import { showNotice } from '~/utils/notice';
 import { authenticateIssuingSneaker } from './service';
+import IssuedDashboard from './IssuedDashboard/index';
 
 
 
@@ -56,6 +57,11 @@ function Factory() {
                 component === 1 &&
                 <IssueStepper
                     password={password}
+                />
+            }
+            {
+                component === 2 &&
+                <IssuedDashboard
                 />
             }
         </Container>

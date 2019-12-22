@@ -83,6 +83,18 @@ export const registerSneakerDetailToDatabase = async ({
     return {};
 }
 
+export async function getIssuedSneakers() {
+    const [err, rs] = await asyncTryCatchReq({
+        url: API().getIssuedSneaker(getSelfId()),
+    }, true);
+
+    if (err) {
+        return [];
+    }
+
+    return rs.sneakers;
+}
+
 export async function issueSneakerToSystem(password, blockchainSneaker) { 
     const newSneaker = await registerSneakerDetailToDatabase(blockchainSneaker);
 
@@ -120,6 +132,7 @@ export async function generateStampDetail(batchInfo) {
     const id = generateSneakerId();
     const infoHash = createCorrespondingSneakerHash({
         ...batchInfo,
+        size: parseFloat(batchInfo.size).toFixed(1),
         factoryId: getSelfId(),
     });
     const eosName = generateRandomEosAccountName();
