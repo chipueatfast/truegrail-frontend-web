@@ -127,6 +127,23 @@ export async function issueSneakerToSystem(password, blockchainSneaker) {
     return {};
 }
 
+export async function markAsFraud(password, sneakerId) {
+    const blockchainRs = await executeSmartContractMethod({
+        method: 'markfraud',
+        namedParams: {
+            factory: getEosName(),
+            factory_id: getSelfId(),
+            sneaker_id: sneakerId,
+        },
+    }, password);
+
+    if (blockchainRs.error) {
+        return false;
+    }
+
+    return true;
+}
+
 export async function generateStampDetail(batchInfo) {
     const id = generateSneakerId();
     const toConvert = batchInfo.releaseDate;
