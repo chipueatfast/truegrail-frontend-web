@@ -96,7 +96,6 @@ function InfoInput({
                             errors,
                             handleSubmit,
                         } = formikProps;
-                        console.log(errors);
                         return (
                             <>
                                 <FirstLineInFormContainer>

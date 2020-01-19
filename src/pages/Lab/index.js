@@ -1,13 +1,10 @@
 import React from 'react';
-import { decryptPrivateKey, createCorrespondingSneakerHash } from '~/utils/eosio';
+import { decryptPrivateKey } from '~/utils/eosio';
 import { getEncryptedPrivateKey } from '~/utils/localStorage';
 
 function Lab() {
     const [password, setPassword] = React.useState('');
     const [privateKey, setPrivateKey] = React.useState('chua co giai ma');
-    console.log(createCorrespondingSneakerHash({
-
-    }));
     return (
         <div>
             get private key

@@ -129,9 +129,11 @@ export async function issueSneakerToSystem(password, blockchainSneaker) {
 
 export async function generateStampDetail(batchInfo) {
     const id = generateSneakerId();
+    const toConvert = batchInfo.releaseDate;
     const infoHash = createCorrespondingSneakerHash({
         ...batchInfo,
         size: parseFloat(batchInfo.size).toFixed(1),
+        releaseDate: `${1900 + toConvert.getYear()}-${toConvert.getMonth() + 1}-${toConvert.getDate()}`,
         factoryId: getSelfId(),
     });
     const eosName = generateRandomEosAccountName();
