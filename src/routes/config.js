@@ -27,6 +27,11 @@ export default [
         component: dynamicWrapper(() => import('../pages/Factory')),
     },
     {
+        canActivate: [validRole.bind(null, 'factory')],
+        path: '/tracing',
+        component: dynamicWrapper(() => import('../pages/Tracing')),
+    },
+    {
         path: '/hardcopy',
         component: dynamicWrapper(() => import('../pages/Factory/HardCopy')),
     },

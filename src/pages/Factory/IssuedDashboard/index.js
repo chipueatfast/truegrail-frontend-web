@@ -10,7 +10,7 @@ import IssuedDashboardMiniature from '~/assets/img/miniature/issuedDashboard.png
 
 import { showRequiringPasswordModal, closeModal } from '~/utils/modal';
 import { getIssuedSneakers, markAsFraud } from '../service';
-import { useStyles, ConditionalTableCell, InverseTableCell, Container } from './styled';
+import { useStyles, ConditionalTableCell, InverseTableCell, Container, ActionContainer } from './styled';
 import LoadingDot from '~/tg-ui/LoadingDot/index';
 import { getItemByPrimaryKey } from '~/utils/eosio';
 import { simulateLongFetch } from '~/utils/async';
@@ -80,10 +80,21 @@ function DataRow({
 }
 
 function renderAction(sneakerId, currentStatus, setStatus) {
+  const actionItems = [
+    (
+      <Button
+        onClick={
+          () => window.open('/tracing?sneakerId=' + sneakerId)
+        }
+        variant='outlined'
+      >
+        Trace
+      </Button>
+    ),
+  ];
   if (currentStatus === 'new') {
-    return (
-      <div>
-        <Button
+    actionItems.push((
+      <Button
           onClick={
             () => markAsFraudHandler(sneakerId, setStatus)
           }
@@ -92,11 +103,16 @@ function renderAction(sneakerId, currentStatus, setStatus) {
         >
           Mark as fraud
         </Button>
-      </div>
-    )
+    ));
   }
 
-  return null;
+  return (
+    <ActionContainer>
+      {
+        actionItems
+      }
+    </ActionContainer>
+  )
 }
 
 function markAsFraudHandler(sneakerId, setStatus) {

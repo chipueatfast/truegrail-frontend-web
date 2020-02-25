@@ -54,17 +54,22 @@ export async function generateKeyPair() {
 
 }
 
-export async function getRecordFromTableByKey({
-    table,
-    id,
-}) {
+
+
+export async function getRecordFromTableByKey(tableParams) {
+    const {
+        table,
+        id,
+        ...rest
+    } = tableParams;
     const rs = await rpc.get_table_rows({
         json: true,
         code: EOS_SPEC.smartContract,
         scope: EOS_SPEC.smartContract,
         table,
         lower_bound: id, 
-        upper_bound: id+1,
+        upper_bound: id,
+        ...rest
     });
     return rs.rows;
 }

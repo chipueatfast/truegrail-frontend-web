@@ -29,3 +29,9 @@ export const useStyles = makeStyles((theme, props) => ({
       minWidth: 650,
     },
 }));
+
+export const ActionContainer = styled.div`
+  button {
+    margin: 6px;
+  }
+`

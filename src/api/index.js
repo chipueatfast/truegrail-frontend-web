@@ -21,5 +21,6 @@ export default () => {
         issueSneaker: (factoryId) => `/sneaker/factory/${factoryId}/`,
         getPasswordStatus: (userId) => `/user/password/default/${userId}/`,
         changePassword: (userId) => `/user/password/${userId}`,
+        tracing: () => `/tracing/`,
     })
 }

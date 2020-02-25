@@ -13,8 +13,8 @@ export function composeAccessTokenHeader() {
 
 export function asyncTryCatchReq(reqParams, isAuthenticated) {
     return axios({
-        ...reqParams,
         baseURL: server,
+        ...reqParams,
         ...(isAuthenticated ? {headers: composeAccessTokenHeader()} : null),
     }).then(data => {
         return [null, data];
