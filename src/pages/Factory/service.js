@@ -147,10 +147,14 @@ export async function markAsFraud(password, sneakerId) {
 export async function generateStampDetail(batchInfo) {
     const id = generateSneakerId();
     const toConvert = batchInfo.releaseDate;
+    const month = toConvert.getMonth() + 1;
+    const month2Digit = `${Math.floor(month/10)}${month % 10}`;
+    const date = toConvert.getDate();
+    const date2Digit = `${Math.floor(date/10)}${date % 10}`;
     const infoHash = createCorrespondingSneakerHash({
         ...batchInfo,
         size: parseFloat(batchInfo.size).toFixed(1),
-        releaseDate: `${1900 + toConvert.getYear()}-${toConvert.getMonth() + 1}-${toConvert.getDate()}`,
+        releaseDate: `${1900 + toConvert.getYear()}-${month2Digit}-${date2Digit}`,
         factoryId: getSelfId(),
     });
     const eosName = generateRandomEosAccountName();
