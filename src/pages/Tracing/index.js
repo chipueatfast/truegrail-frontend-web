@@ -16,8 +16,14 @@ function Tracing() {
 
     useEffect(() => {
         fetchHistoryOfASneaker(parsed.sneakerId).then(details => {
-            console.log(details)
-            setTracing(details)
+            const issue = details.find(detail => detail.type === 'issue');
+            const claim = details.find(detail => detail.type === 'claim');
+            const resell = details.filter(detail => detail.type === 'resell');
+            setTracing({
+                issue,
+                claim,
+                resell: resell || [],
+            })
         });
     }, [])
 
@@ -60,17 +66,17 @@ function Tracing() {
             <>
                 {
                     resell.map(r => (
-                     <TraceRowContainer>
+                     <TraceRowContainer key={r.id}>
                         <img
                             alt='mini'
                             src={ResellImg}
                         />
                         <div>
-                            Seller: {r.seller.username}
+                            Seller: {r.sellerName}
                             <br />
                             to
                             <br/>
-                            Buyer: {r.buyer.username}
+                            Buyer: {r.buyerName}
                         </div>
                     </TraceRowContainer>
                     ))
@@ -88,7 +94,7 @@ function Tracing() {
                 !!claim && renderClaim()
             }
             {
-                resell.length !== 0 && renderResell()
+                resell && resell.length !== 0 && renderResell()
             }
         </Container>
     )
