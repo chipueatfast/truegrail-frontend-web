@@ -71,7 +71,7 @@
     "react-app-polyfill": "^0.2.2",
     "react-color": "^2.17.3",
     "react-compose": "^2.0.0",
-    "react-dev-utils": "^8.0.0",
+    "react-dev-utils": "^11.0.4",
     "react-dom": "^16.8.6",
     "react-helmet": "^5.2.1",
     "react-redux": "^7.0.3",
